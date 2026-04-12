@@ -3430,22 +3430,22 @@ select {
 
 .page-header h1 {
   font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(60px, 12vw, 180px);
+  font-weight: 800;
+  font-size: clamp(48px, 6vw, 80px);
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.05);
-  line-height: 1;
-  letter-spacing: -3px;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: normal;
+  margin-bottom: 10px;
 }
 
 .page-header .page-subtitle {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(24px, 4vw, 48px);
-  text-transform: uppercase;
-  color: var(--white);
-  margin-top: -20px;
-  position: relative;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--gray-text);
+  margin-top: 0;
+  text-transform: none;
 }
 
 /* ========================================
