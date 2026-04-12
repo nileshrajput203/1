@@ -1,7 +1,7 @@
 const { OpenAI } = require('openai');
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'dummy_key_for_local_startup',
 });
 
 const SYSTEM_PROMPT = `You are the Blink Beyond AI assistant. Answer questions about this digital marketing agency concisely. Proactively use the surf_page tool to physically guide the user to the relevant sections of the website as you explain them. Do not use markdown or complex formatting in your answers because they will be read aloud through text-to-speech.`;
