@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blink Beyond — Where Brands Blink and Boom</title>
-  <meta name="description" content="Blink Beyond is a digital marketing agency in Mumbai, India specializing in web development, social media management, branding, and performance marketing.">
+  <meta name="description" content="Blink Beyond is a digital marketing agency in Palghar, Maharashtra specializing in web development, social media management, branding, and performance marketing.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="Blink Beyond | Digital Marketing Agency">
+  <meta property="og:description" content="Where brands blink and boom. Get in touch to build your brand and drive growth.">
+  <meta property="og:image" content="https://blinkbeyond.co.in/assets/og-image.jpg">
+  <meta property="og:url" content="https://blinkbeyond.co.in">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -71,6 +77,7 @@
   <!-- ═══════════════ HERO (OSMO STYLE) ═══════════════ -->
   <section class="hero-page" id="hero">
     <div class="hero-text">
+      <p class="hero-location">Digital Marketing Agency · Palghar, Maharashtra</p>
       <h1 class="hero-headline">
         <span class="headline-part">Think You've Seen Growth?</span>
         <span class="hero-logo-icon">
@@ -82,9 +89,12 @@
         <span class="headline-part">Not Yet</span>
       </h1>
       <p class="hero-sub">
-        Platform packed with <span class="pill">Webflow</span> &amp; <span class="pill">HTML</span> resources,<br>
-        <span class="pill">icons</span> ,&nbsp; <span class="pill">easings</span> &nbsp;and a page transition&nbsp; <span class="pill">course</span>
+        Results-driven strategies that scale your business.
       </p>
+      <div class="hero-pills">
+        <span class="pill">Performance Ads</span> <span class="pill">SEO</span>
+        <span class="pill">Creative Content</span> <span class="pill">Social Media</span>
+      </div>
     </div>
 
     <!-- ARC -->
@@ -241,7 +251,13 @@
 
       </div>
     </div>
-    
+
+    <!-- Scroll Indicator -->
+    <div class="hero-scroll">
+      <div class="scroll-dot"></div>
+      <span>Scroll</span>
+    </div>
+
     <!-- Inner text sitting below the arc, similar to Osmo -->
     <div class="hero-inner-text">
       <h2>
@@ -263,20 +279,17 @@
     <div id="card">
       <div class="card-scanlines"></div>
       <div class="card-glow-inner"></div>
-      <!-- 4‑reel mute grid background -->
-      <div class="reel-grid">
-        <video class="reel-video" src="https://cdn.coverr.co/videos/coverr-working-at-the-office-1579/1080p.mp4" autoplay muted loop playsinline></video>
-        <video class="reel-video" src="https://cdn.coverr.co/videos/coverr-night-city-traffic-1575/1080p.mp4" autoplay muted loop playsinline></video>
-        <video class="reel-video" src="https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1572/1080p.mp4" autoplay muted loop playsinline></video>
-        <video class="reel-video" src="https://cdn.coverr.co/videos/coverr-hands-typing-on-a-keyboard-1574/1080p.mp4" autoplay muted loop playsinline></video>
+      <!-- YouTube Video background -->
+      <div class="reel-grid" style="display: block; overflow: hidden; padding: 0; background: #000;">
+        <iframe src="https://www.youtube.com/embed/RvreULjnzFo?autoplay=1&mute=1&controls=0&loop=1&playlist=RvreULjnzFo&showinfo=0&rel=0&modestbranding=1" 
+                style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-width: 177.77vh; min-height: 100vh; transform: translate(-50%, -50%); pointer-events: none; border: none; filter: contrast(1.05) saturate(1.1);" 
+                frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>
       </div>
       <div class="play-circle" id="play-circle">
         <svg id="play-svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M5 2.5L12.5 8L5 13.5V2.5Z" fill="#fff"/>
         </svg>
       </div>
-      <div class="card-label" id="card-label">Blink in use</div>
-      <div class="card-timer" id="card-timer">00:48</div>
 
       <div class="fs-ui" id="fs-ui">
         <div class="fs-close" id="fs-close">
@@ -284,18 +297,23 @@
             <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
           </svg>
         </div>
-        <div class="fs-title">
-          <svg viewBox="0 0 60 40" fill="currentColor" style="height:32px;width:auto;margin-bottom:10px;display:block">
-            <path d="M5 5 L28 20 L5 35 Z" />
-            <path d="M31 5 L54 20 L31 35 Z" />
-          </svg>
-          SHOW REEL
-        </div>
-        <div class="fs-sub">2026 — 00:48</div>
         <div class="fs-progress"><div class="fs-fill" id="fs-fill"></div></div>
       </div>
     </div>
   </section>
+
+  <div class="clients-strip">
+    <div class="clients-strip-inner" style="justify-content: center; max-width: 1200px; margin: 0 auto; padding: 0 5vw;">
+      <div class="clients-label">Trusted by local brands</div>
+      <div class="clients-logos">
+        <span class="client-name">Royals Burger</span>
+        <span class="client-divider">·</span>
+        <span class="client-name">Prime Dental</span>
+        <span class="client-divider">·</span>
+        <span class="client-name">Sun Bless Foods</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════ BLINK ═══════════════ -->
   <section class="parallax-word-section" id="section-blink">
@@ -582,71 +600,61 @@
 
   <!-- ═══════════════ FOOTER ═══════════════ -->
   <footer class="footer" id="site-footer">
-    <!-- Lamp light effect -->
+    <!-- Cinematic tube-light glow -->
     <div class="lamp" id="footer-lamp">
-      <div class="lamp__beam-wrap">
-        <div class="lamp__beam lamp__beam--left"></div>
-        <div class="lamp__beam lamp__beam--right"></div>
-        <div class="lamp__mask-bottom"></div>
-        <div class="lamp__blur-bg"></div>
-        <div class="lamp__glow-ball"></div>
-        <div class="lamp__glow-line"></div>
-        <div class="lamp__mask-top"></div>
-      </div>
+      <div class="lamp__glow"></div>
+      <div class="lamp__line"></div>
     </div>
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-col footer-about">
-          <div class="footer-logo">
-            <svg viewBox="0 0 60 40" fill="currentColor" style="height:24px;width:auto">
-              <path d="M5 5 L28 20 L5 35 Z" />
-              <path d="M31 5 L54 20 L31 35 Z" />
-            </svg>
+
+    <!-- Footer content — hidden until light ignites -->
+    <div class="footer-content">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-col footer-about">
+            <div class="footer-logo">BLINK <span>BEYOND</span></div>
+            <p class="footer-tagline">Where brands blink and boom. We craft digital experiences that drive real growth.</p>
+            <div class="footer-social-links">
+              <a href="https://instagram.com/blinkbeyond" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="https://linkedin.com/company/blinkbeyond" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </a>
+              <a href="https://facebook.com/blinkbeyond" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+            </div>
           </div>
-          <p class="footer-tagline">Where brands blink and boom. We craft digital experiences that drive real growth.</p>
-          <div class="footer-social-links">
-            <a href="#" aria-label="Instagram" class="social-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-            <a href="#" aria-label="LinkedIn" class="social-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-            <a href="#" aria-label="Facebook" class="social-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
+          <div class="footer-col footer-links-col">
+            <h4 class="footer-col-title">Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
           </div>
-        </div>
-        <div class="footer-col footer-links-col">
-          <h4 class="footer-col-title">Quick Links</h4>
-          <a href="index.html">Home</a>
-          <a href="services.html">Services</a>
-          <a href="about.html">About Us</a>
-          <a href="contact.html">Contact</a>
-        </div>
-        <div class="footer-col footer-services-col">
-          <h4 class="footer-col-title">Services</h4>
-          <a href="services.html">Web Development</a>
-          <a href="services.html">Social Media Marketing</a>
-          <a href="services.html">Performance Marketing</a>
-          <a href="services.html">UI/UX Design</a>
-        </div>
-        <div class="footer-col footer-contact-col">
-          <h4 class="footer-col-title">Get In Touch</h4>
-          <p><span class="footer-contact-label">Address</span>Ho-Palghar, 401404,<br>Mumbai-Maharashtra.</p>
-          <p><span class="footer-contact-label">Phone</span><a href="tel:+919545556009">+91 95455 56009</a></p>
-          <p><span class="footer-contact-label">Email</span><a href="mailto:support@Blinkbeyond.co.in">support@Blinkbeyond.co.in</a></p>
+          <div class="footer-col footer-services-col">
+            <h4 class="footer-col-title">Services</h4>
+            <a href="services.html">Web Development</a>
+            <a href="services.html">Social Media Marketing</a>
+            <a href="services.html">Performance Marketing</a>
+            <a href="services.html">UI/UX Design</a>
+          </div>
+          <div class="footer-col footer-contact-col">
+            <h4 class="footer-col-title">Get In Touch</h4>
+            <p><span class="footer-contact-label">Address</span>Palghar - 401404,<br>Mumbai-Maharashtra.</p>
+            <p><span class="footer-contact-label">Phone</span><a href="tel:+919545556009">+91 95455 56009</a></p>
+            <p><span class="footer-contact-label">Email</span><a href="mailto:support@blinkbeyond.co.in">support@blinkbeyond.co.in</a></p>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Vaporize brand canvas -->
-    <div class="footer-brand-wrap" id="footer-brand-wrap">
-      <canvas id="footer-brand-canvas"></canvas>
-    </div>
-    <!-- Copyright bar -->
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <p>© 2026 Agency. All rights reserved.</p>
-        <p>Crafted with passion in Mumbai 🇮🇳</p>
+      <div class="footer-brand-wrap" id="footer-brand-wrap">
+        <span class="footer-brand-text">BLINK BEYOND</span>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <p>© 2026 Blink Beyond. All rights reserved.</p>
+          <p>Crafted with passion in Mumbai 🇮🇳</p>
+        </div>
       </div>
     </div>
   </footer>
@@ -665,5 +673,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
   <script src="js/main.js"></script>
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/919545556009" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
 </body>
 </html>

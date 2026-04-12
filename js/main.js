@@ -333,20 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Contact form interaction ──
   const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const btn = contactForm.querySelector('.submit-btn');
-      const originalText = btn.textContent;
-      btn.textContent = 'SENT ✓';
-      btn.style.background = '#22c55e';
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = '';
-        contactForm.reset();
-      }, 2500);
-    });
-  }
+  // (Formspree handles the submission natively, so JS intercept is removed)
 
   // ── Parallax-like float on mouse for hero ──
   const heroContent = document.querySelector('.hero-content');
@@ -372,16 +359,22 @@ document.addEventListener('DOMContentLoaded', () => {
           const el = entry.target;
           const target = parseInt(el.dataset.count, 10);
           const suffix = el.dataset.suffix || '';
-          let current = 0;
-          const step = Math.ceil(target / 40);
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-              current = target;
-              clearInterval(timer);
+          let startTime = null;
+          const duration = 1500;
+          const easeOut = t => 1 - Math.pow(1 - t, 3);
+          
+          const animateCount = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = (timestamp - startTime) / duration;
+            if (progress < 1) {
+              const current = Math.floor(target * easeOut(progress));
+              el.textContent = current + suffix;
+              requestAnimationFrame(animateCount);
+            } else {
+              el.textContent = target + suffix;
             }
-            el.textContent = current + suffix;
-          }, 30);
+          };
+          requestAnimationFrame(animateCount);
           counterObserver.unobserve(el);
         }
       });
@@ -722,6 +715,37 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    balloonCanvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!gameActive && gameStarted) return; 
+      
+      const rect = balloonCanvas.getBoundingClientRect();
+      const clickX = touch.clientX - rect.left;
+      const clickY = touch.clientY - rect.top;
+      
+      let clickedBalloon = null;
+      for (let i = balloons.length - 1; i >= 0; i--) {
+        const b = balloons[i];
+        if (b.popped) continue;
+        
+        const dx = b.x - clickX;
+        const dy = b.y - b.r * 0.2 - clickY;
+        
+        if (Math.sqrt(dx * dx + dy * dy) < b.r + 20) { 
+          clickedBalloon = b;
+          break; 
+        }
+      }
+
+      if (clickedBalloon) {
+        if (!gameStarted) startGame(); 
+        clickedBalloon.pop();
+        score++;
+        scoreEl.textContent = score;
+      }
+    }, { passive: false });
+
     const animate = () => {
       ctx.clearRect(0, 0, canvasW, canvasH);
       
@@ -1028,9 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeBrandCanvas);
     
     // Initial render — wait for fonts
-    setTimeout(resizeBrandCanvas, 100);
-    setTimeout(resizeBrandCanvas, 500);
-    setTimeout(resizeBrandCanvas, 1500);
+    document.fonts.ready.then(() => resizeBrandCanvas());
   }
 
   /* ========================================
@@ -1100,7 +1122,7 @@ window.addEventListener('load', () => {
         trigger: triggerElement,
         start: '0% 0%',
         end: '100% 0%',
-        scrub: 0
+        scrub: 1
       }
     });
 
@@ -1250,3 +1272,41 @@ window.addEventListener('load', () => {
   }
 
 });
+
+// ══════════════════════════════════════════
+// CINEMATIC TUBE-LIGHT FOOTER
+// IntersectionObserver triggers flicker + content reveal
+// ══════════════════════════════════════════
+(function() {
+  const footer = document.getElementById('site-footer');
+  const lamp = document.getElementById('footer-lamp');
+  if (!footer || !lamp) return;
+
+  let fired = false;
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !fired) {
+        fired = true;
+
+        // 1. Start flicker animation (CSS handles the keyframes)
+        setTimeout(function() {
+          lamp.classList.add('lamp-active');
+        }, 600); // 0.6s delay — starts in darkness
+
+        // 2. After flicker completes (~2.5s animation + 0.6s delay = 3.1s),
+        //    reveal footer content
+        setTimeout(function() {
+          footer.classList.add('footer-revealed');
+        }, 3100);
+
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  observer.observe(footer);
+})();

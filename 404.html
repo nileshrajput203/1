@@ -3,34 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — Blink Beyond</title>
-  <meta name="description" content="Get in touch with Blink Beyond. Let's work together to build your brand and drive growth.">
+  <title>404 — Blink Beyond</title>
+  <meta name="description" content="Page not found — Blink Beyond digital marketing agency.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta property="og:title" content="Blink Beyond | Digital Marketing Agency">
-  <meta property="og:description" content="Where brands blink and boom. Get in touch to build your brand and drive growth.">
-  <meta property="og:image" content="https://blinkbeyond.co.in/assets/og-image.jpg">
-  <meta property="og:url" content="https://blinkbeyond.co.in">
-  <meta property="og:type" content="website">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .not-found-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 5vw;
+      background: #000;
+      position: relative;
+    }
+    .not-found-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(61,61,255,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .not-found-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(120px, 20vw, 240px);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1;
+      letter-spacing: -4px;
+      margin: 0;
+    }
+    .not-found-msg {
+      font-family: 'Caveat', cursive;
+      font-size: 28px;
+      color: rgba(255,255,255,0.5);
+      margin: 16px 0 40px;
+    }
+    .not-found-btn {
+      display: inline-block;
+      background: #3D3DFF;
+      color: #ffffff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .not-found-btn:hover {
+      background: #5555ff;
+      transform: translateY(-3px);
+    }
+  </style>
 </head>
 <body>
-  <!-- Page Loader — Premium Branded Splash -->
-  <div class="page-loader" id="page-loader">
-    <div class="loader-bg-glow"></div>
-    <div class="loader-center">
-      <div class="loader-wordmark-wrap">
-        <span class="loader-fill-ghost">BLINK BEYOND</span>
-        <span class="loader-fill-text" id="loader-fill-text">BLINK BEYOND</span>
-      </div>
-      <p class="loader-tagline">Where Brands Blink &amp; Boom</p>
-    </div>
-    <div class="loader-bottom">
-      <div class="loader-counter"><span id="loader-percent">0</span>%</div>
-      <div class="loader-bar-track"><div class="loader-bar-fill" id="loader-bar-fill"></div></div>
-      <div class="loader-loading-text">[Loading...]</div>
-    </div>
-  </div>
-
   <!-- ═══════════════ NAVIGATION ═══════════════ -->
   <nav class="navbar">
     <div class="nav-inner">
@@ -47,66 +78,11 @@
     </div>
   </nav>
 
-  <!-- ═══════════════ CONTACT ═══════════════ -->
-  <section class="contact-section">
-    <div class="container">
-      <div class="contact-grid">
-        <!-- Left side -->
-        <div class="contact-left reveal">
-          <h2>
-            LET'S WORK<br>
-            <span class="blue">TOGETHER</span>
-          </h2>
-          <p class="contact-tagline">RESULTS · GROWTH · CLARITY</p>
-        </div>
-        <!-- Right side — Form -->
-        <div class="contact-card reveal reveal-delay-2">
-          <h3>Tell us about your project</h3>
-          <div id="formSuccessMessage" style="display: none; padding: 15px; margin-bottom: 20px; background-color: rgba(37, 211, 102, 0.1); color: #25D366; border: 1px solid #25D366; border-radius: 5px;">
-            Thank you! Your message has been sent successfully. We will get back to you shortly.
-          </div>
-          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <input type="hidden" name="_next" value="https://blinkbeyond.co.in/contact.html?success=true">
-            <input type="hidden" name="_subject" value="New inquiry from Blink Beyond website">
-            <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
-            </div>
-            <div class="form-group">
-              <label for="businessName">Business Name</label>
-              <input type="text" id="businessName" name="businessName" placeholder="Your Company">
-            </div>
-            <div class="form-group">
-              <label for="email">Email ID</label>
-              <input type="email" id="email" name="email" placeholder="you@company.com" required>
-            </div>
-            <div class="form-group">
-              <label for="phone">Contact No.</label>
-              <input type="tel" id="phone" name="phone" placeholder="+91 00000 00000">
-            </div>
-            <div class="form-group">
-              <label>What are you looking for?</label>
-              <div class="checkbox-group">
-                <label><input type="checkbox" name="service" value="website"> Website</label>
-                <label><input type="checkbox" name="service" value="branding"> Branding</label>
-                <label><input type="checkbox" name="service" value="ads"> Ads / Growth</label>
-                <label><input type="checkbox" name="service" value="unsure"> Not sure yet</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="message">Have a question or idea?</label>
-              <textarea id="message" name="message" placeholder="Tell us about your project..."></textarea>
-            </div>
-            <button type="submit" class="submit-btn">SEND</button>
-          </form>
-          <script>
-            if (window.location.search.includes('success=true')) {
-              document.getElementById('formSuccessMessage').style.display = 'block';
-            }
-          </script>
-        </div>
-      </div>
-    </div>
+  <!-- ═══════════════ 404 HERO ═══════════════ -->
+  <section class="not-found-section">
+    <h1 class="not-found-num">404</h1>
+    <p class="not-found-msg">Page not found.</p>
+    <a href="index.html" class="not-found-btn">Take me home</a>
   </section>
 
   <!-- ═══════════════ FOOTER ═══════════════ -->
@@ -148,15 +124,15 @@
     </div>
   </footer>
 
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="js/main.js"></script>
   <!-- WhatsApp Floating Button -->
   <a href="https://wa.me/919545556009" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
     </svg>
   </a>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
