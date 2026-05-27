@@ -5,20 +5,43 @@
 document.addEventListener('DOMContentLoaded', () => {
   // ── Premium Branded Splash Screen ──
   const loader = document.getElementById('page-loader');
+    // URL override for testing: ?loader=show forces the preloader to run
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('loader') === 'show') {
+        localStorage.removeItem('bb_loader_seen');
+        try { sessionStorage.removeItem('bb_loader_seen'); } catch (e) {}
+        document.cookie = 'bb_loader_seen=; path=/; max-age=0';
+        document.documentElement.classList.remove('bb-loader-skip');
+      }
+    } catch (e) {}
   if (loader) {
-    const cookieName = 'bb_loader_seen';
-    const hasCookie = document.cookie.split('; ').some((row) => row.startsWith(`${cookieName}=`));
-    const setCookie = (name, value, days) => {
-      const maxAge = days * 24 * 60 * 60;
-      document.cookie = `${name}=${value}; max-age=${maxAge}; path=/; SameSite=Lax`;
+    const docEl = document.documentElement;
+    const getCookieSeen = () => /(?:^|; )bb_loader_seen=1/.test(document.cookie);
+    const getSeenFlag = () => {
+      if (docEl.classList.contains('bb-loader-skip')) return true;
+      try {
+        if (localStorage.getItem('bb_loader_seen') === '1') return true;
+      } catch (e) {}
+      if (getCookieSeen()) return true;
+      try {
+        return sessionStorage.getItem('bb_loader_seen') === '1';
+      } catch (e) {
+        return false;
+      }
+    };
+    const setSeenFlag = () => {
+      try { localStorage.setItem('bb_loader_seen', '1'); } catch (e) {}
+      document.cookie = 'bb_loader_seen=1; path=/; max-age=31536000';
+      try { sessionStorage.setItem('bb_loader_seen', '1'); } catch (e) {}
     };
 
-    // Show only once across the whole site
-    if (hasCookie) {
+    if (getSeenFlag()) {
       loader.classList.add('skip');
+      loader.remove();
     } else {
-      setCookie(cookieName, '1', 365);
-      const percentEl = document.getElementById('loader-percent');
+      setSeenFlag();
+      const counterEl = document.getElementById('loader-percent');
       const barFill = document.getElementById('loader-bar-fill');
       const fillText = document.getElementById('loader-fill-text');
       let current = 0;
@@ -28,19 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
       function animateLoader(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Eased progress: fast-slow-fast (ease-in-out cubic)
+        // Eased progress (cubic ease-in-out)
         const eased = progress < 0.5
           ? 4 * progress * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 3) / 2;
         current = Math.floor(eased * 100);
 
-        if (percentEl) percentEl.textContent = current;
+        if (counterEl) {
+          const counterValue = current + '%';
+          counterEl.textContent = counterValue;
+          counterEl.dataset.value = counterValue;
+          counterEl.style.setProperty('--progress', current + '%');
+        }
         if (barFill) barFill.style.width = current + '%';
 
-        // Progressive white fill inside the text
         if (fillText) {
-          fillText.style.background = 
-            'linear-gradient(to right, #ffffff 0%, #ffffff ' + current + '%, transparent ' + current + '%)';
+          fillText.style.background =
+            'linear-gradient(to right, #ffffff 0%, #ffffff ' + current + '%, rgba(255,255,255,0.24) ' + current + '%)';
           fillText.style.webkitBackgroundClip = 'text';
           fillText.style.backgroundClip = 'text';
           fillText.style.webkitTextFillColor = 'transparent';
@@ -49,10 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (progress < 1) {
           requestAnimationFrame(animateLoader);
         } else {
-          // Done — slide loader out after a brief pause
           setTimeout(() => {
             loader.classList.add('hidden');
-            // Remove from DOM after transition
             setTimeout(() => loader.remove(), 900);
           }, 400);
         }

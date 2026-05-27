@@ -6,24 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Blink Beyond</title>
   <meta name="description"
-    content="Learn about Blink Beyond \u2014 a results-driven digital marketing agency focused on building brands that stand out and grow.">
+    content="Learn about Blink Beyond — a results-driven digital marketing agency focused on building brands that stand out and grow.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta property="og:title" content="Blink Beyond | Digital Marketing Agency">
   <meta property="og:description" content="Where brands blink and boom. Get in touch to build your brand and drive growth.">
   <meta property="og:image" content="https://blinkbeyond.co.in/assets/og-image.jpg">
   <meta property="og:url" content="https://blinkbeyond.co.in">
   <meta property="og:type" content="website">
-  <link rel="stylesheet" href="css/style.css">
   <script>
     (function() {
-      var hasCookie = document.cookie.split('; ').some(function(row) {
-        return row.indexOf('bb_loader_seen=') === 0;
-      });
-      if (hasCookie) {
-        document.documentElement.classList.add('loader-skip');
+      var seen = false;
+      try {
+        seen = localStorage.getItem('bb_loader_seen') === '1';
+      } catch (e) {}
+      if (!seen && /(?:^|; )bb_loader_seen=1/.test(document.cookie)) {
+        seen = true;
+      }
+      if (seen) {
+        document.documentElement.classList.add('bb-loader-skip');
       }
     })();
   </script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -38,7 +42,7 @@
       <p class="loader-tagline">Where Brands Blink &amp; Boom</p>
     </div>
     <div class="loader-bottom">
-      <div class="loader-counter"><span id="loader-percent">0</span>%</div>
+      <div class="loader-counter" id="loader-percent" data-value="0%">0%</div>
       <div class="loader-bar-track">
         <div class="loader-bar-fill" id="loader-bar-fill"></div>
       </div>
@@ -63,7 +67,7 @@
   </nav>
 
   <!-- ═══════════════ WHO WE ARE ═══════════════ -->
-  <section class="who-section section-pad" style="padding-top: calc(var(--nav-height) + 80px);">
+  <section class="who-section section-pad section-divider section-divider--dark" style="padding-top: calc(var(--nav-height) + 80px);">
     <div class="container">
       <div class="who-grid">
         <div class="who-left-text reveal">
@@ -94,7 +98,7 @@
   </section>
 
   <!-- ═══════════════ WHAT WE DO ═══════════════ -->
-  <section class="whatwedo-section">
+  <section class="whatwedo-section section-divider section-divider--dark">
     <div class="container whatwedo-inner">
       <div class="whatwedo-label reveal">WHAT WE DO ?</div>
       <div class="whatwedo-display reveal">
@@ -118,7 +122,7 @@
   </section>
 
   <!-- ═══════════════ HOW WE WORK ═══════════════ -->
-  <section class="howwework-section section-pad">
+  <section class="howwework-section section-pad section-divider section-divider--dark">
     <div class="container">
       <!-- Arc positioned relative to container, not grid column -->
 
@@ -168,14 +172,14 @@
   </section>
 
   <!-- ═══════════════ FOUNDERS ═══════════════ -->
-  <section class="team-section section-pad">
+  <section class="team-section section-pad section-divider section-divider--dark">
     <div class="container">
       <h2 class="team-section-title reveal">Founders</h2>
       <div class="team-grid">
         <!-- Founder 1 -->
         <a href="#" class="team-card reveal">
           <div class="card-base-layer" style="width: 100%;">
-            <div class="team-avatar" style="background-image: url('assets/images/nilesh-rajput.jpg'); background-size: cover; background-position: center; border-radius: 50%; font-size: 0;"><img src="assets/images/nilesh-rajput.jpg" alt="Nilesh Rajput" style="width: 100%; height: 100%; object-fit: cover; opacity: 0;" onerror="this.parentElement.style.backgroundImage='none'; this.parentElement.innerText='👤'; this.style.display='none'; this.parentElement.style.fontSize='';"></div>
+            <div class="team-avatar" style="background-image: url('assets/images/nilesh-rajput.svg'); background-size: cover; background-position: center; border-radius: 50%; font-size: 0;"><img src="assets/images/nilesh-rajput.svg" alt="Nilesh Rajput" style="width: 100%; height: 100%; object-fit: cover; opacity: 0;" onerror="this.parentElement.style.backgroundImage='none'; this.parentElement.innerText='👤'; this.style.display='none'; this.parentElement.style.fontSize='';"></div>
             <div class="team-info">
               <h3>Nilesh Rajput <span>· AI/ML Engineer</span></h3>
               <div class="about-label">About</div>

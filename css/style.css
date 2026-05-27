@@ -2245,7 +2245,7 @@ select {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: clamp(30px, 5vw, 80px);
-  align-items: start;
+  align-items: center;
 }
 
 .service-block:nth-child(even) {
@@ -2309,9 +2309,9 @@ select {
 }
 
 .service-sub-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
 }
 
 .service-sub-block h4 {
@@ -2339,8 +2339,8 @@ select {
   font-family: var(--font-body);
   font-size: clamp(13px, 1.1vw, 15px);
   color: rgba(255, 255, 255, 0.6);
-  line-height: 1.8;
-  padding: 6px 0;
+  line-height: 1.5;
+  padding: 4px 0;
   display: flex;
   gap: 12px;
   align-items: flex-start;
@@ -2457,6 +2457,10 @@ select {
   .service-block:nth-child(even) .service-block-left,
   .service-block:nth-child(even) .service-block-right {
     order: unset;
+  }
+  
+  .service-sub-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2631,7 +2635,7 @@ select {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: clamp(32px, 4vw, 48px);
-  align-items: stretch;
+  align-items: start;
 }
 
 .team-card {
@@ -2655,7 +2659,7 @@ select {
   grid-template-columns: auto 1fr;
   gap: clamp(22px, 3vw, 32px);
   align-items: center;
-  height: 100%;
+  height: auto;
 }
 
 .team-card:hover {
@@ -3479,7 +3483,9 @@ select {
 .page-loader {
   position: fixed;
   inset: 0;
-  background: var(--blue);
+  background:
+    radial-gradient(120% 100% at 50% 42%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.02) 45%, rgba(0, 0, 0, 0.12) 100%),
+    linear-gradient(140deg, #3f40ff 0%, #3133f2 55%, #2426da 100%);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -3500,6 +3506,7 @@ select {
 }
 
 /* Skip instantly when cookie is present */
+.bb-loader-skip .page-loader,
 .loader-skip .page-loader {
   display: none !important;
 }
@@ -3508,8 +3515,6 @@ select {
 .loader-bg-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 45%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(0, 0, 0, 0.1) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -3525,6 +3530,7 @@ select {
   position: relative;
   display: inline-block;
   line-height: 1;
+  padding: 0 clamp(8px, 1vw, 18px);
 }
 
 /* Shared text style for both layers */
@@ -3532,19 +3538,17 @@ select {
 .loader-fill-text {
   font-family: 'Righteous', sans-serif;
   font-weight: 400;
-  font-style: normal;
-  font-size: clamp(55px, 14vw, 200px);
+  font-size: clamp(64px, 15vw, 210px);
   text-transform: uppercase;
-  letter-spacing: clamp(2px, 0.5vw, 8px);
+  letter-spacing: clamp(2px, 0.45vw, 8px);
   display: block;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 0.9;
 }
 
 /* Ghost layer — faded outline visible at all times */
 .loader-fill-ghost {
-  color: rgba(255, 255, 255, 0.12);
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.22);
 }
 
 /* Fill layer — sits on top, clips a gradient to fill progressively */
@@ -3552,23 +3556,19 @@ select {
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(to right, #ffffff 0%, #ffffff 0%, transparent 0%);
+  background: linear-gradient(to right, #ffffff 0%, #ffffff 0%, rgba(255, 255, 255, 0.24) 0%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: none;
 }
 
 /* Tagline */
 .loader-tagline {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: clamp(12px, 1.5vw, 18px);
-  text-transform: uppercase;
-  letter-spacing: clamp(4px, 0.8vw, 12px);
-  color: rgba(255, 255, 255, 0.45);
+  font-size: clamp(11px, 1.3vw, 16px);
+  color: rgba(255, 255, 255, 0.52);
   margin-top: clamp(16px, 2vh, 28px);
-  animation: loaderFadeIn 0.6s ease 0.6s both;
 }
 
 @keyframes loaderFadeIn {
@@ -3590,43 +3590,54 @@ select {
   left: clamp(30px, 5vw, 80px);
   display: flex;
   align-items: center;
-  gap: clamp(16px, 2vw, 30px);
+  gap: clamp(18px, 2.2vw, 32px);
   z-index: 2;
   animation: loaderFadeIn 0.5s ease 0.4s both;
 }
 
 .loader-counter {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(42px, 7vw, 90px);
-  color: var(--white);
-  line-height: 1;
-  min-width: 100px;
+  position: relative;
+  display: inline-block;
+  font-family: 'Righteous', sans-serif;
+  font-weight: 400;
+  font-size: clamp(64px, 8.6vw, 140px);
+  color: rgba(255, 255, 255, 0.24);
+  min-width: clamp(130px, 17vw, 220px);
+  --progress: 0%;
+}
+
+.loader-counter::before {
+  content: attr(data-value);
+  position: absolute;
+  inset: 0;
+  width: var(--progress);
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffffff;
 }
 
 .loader-bar-track {
-  width: clamp(80px, 15vw, 200px);
-  height: 4px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  width: clamp(130px, 18vw, 280px);
+  height: 3px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
   overflow: hidden;
 }
 
 .loader-bar-fill {
   height: 100%;
   width: 0%;
-  background: var(--white);
-  border-radius: 4px;
-  transition: width 0.1s linear;
+  background: linear-gradient(90deg, #ffffff 0%, #e3e6ff 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
+  transition: width 0.12s linear;
 }
 
 .loader-loading-text {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(10px, 1vw, 14px);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 500;
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: rgba(255, 255, 255, 0.52);
 }
 
 @media (max-width: 600px) {
