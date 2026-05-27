@@ -85,7 +85,9 @@ select {
   padding: clamp(40px, 6vh, 80px) 0;
 }
 
-/* ── TICKER ── */
+/* ========================================
+   TICKER
+   ======================================== */
 .ticker-wrap {
   position: absolute;
   top: 92px;
@@ -142,7 +144,9 @@ select {
   }
 }
 
-/* ── HERO PAGE ── */
+/* ========================================
+   HERO PAGE
+   ======================================== */
 .hero-page {
   width: 100%;
   height: 140vh;
@@ -575,7 +579,9 @@ select {
   line-height: 1.3;
 }
 
-/* ── SCROLL REVEAL ── */
+/* ========================================
+   SCROLL REVEAL
+   ======================================== */
 .reveal {
   opacity: 0;
   transform: translateY(60px);
@@ -2940,9 +2946,9 @@ select {
   pointer-events: none;
 }
 
-/* ══════════════════════════════════════════
+/* ========================================
    CINEMATIC TUBE-LIGHT FOOTER
-   ══════════════════════════════════════════ */
+   ======================================== */
 
 /* ── Footer wrapper ── */
 .footer {
@@ -3893,11 +3899,11 @@ body::after {
   }
 }
 
-/* ==========================================================================
-   UI / Visual Master Prompt Overrides
-   ========================================================================== */
+/* ========================================
+   UI / VISUAL OVERRIDES
+   ======================================== */
 
-/* FIX 1 — CONTACT PAGE */
+/* ── Fix 1: Contact Page ── */
 .contact-card {
   background: #111111;
   border: 1px solid rgba(255,255,255,0.10);
@@ -3986,7 +3992,7 @@ body::after {
   transform: translateY(-2px);
 }
 
-/* FIX 4 — HERO PILLS */
+/* ── Fix 4: Hero Pills ── */
 .hero-pills {
   display: flex;
   flex-wrap: wrap;
@@ -3995,7 +4001,7 @@ body::after {
   margin-top: 32px;
 }
 
-/* FIX 5 — HERO LOCATION */
+/* ── Fix 5: Hero Location ── */
 .hero-location {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
@@ -4006,12 +4012,12 @@ body::after {
   margin-bottom: 20px;
 }
 
-/* FIX 7 — SERVICES HEADER PAD */
+/* ── Fix 7: Services Header Pad ── */
 .page-header {
   padding: calc(var(--nav-height) + clamp(30px, 4vh, 50px)) 0 clamp(20px, 3vh, 40px) !important;
 }
 
-/* FIX 8 — SERVICES CTA BANNER */
+/* ── Fix 8: Services CTA Banner ── */
 .services-cta-banner {
   background: #3D3DFF;
   padding: clamp(60px, 10vh, 100px) 0;
@@ -4051,7 +4057,7 @@ body::after {
   transform: translateY(-3px);
 }
 
-/* FIX 9 — ABOUT SPACING */
+/* ── Fix 9: About Spacing ── */
 .who-section {
   padding-bottom: clamp(40px, 6vh, 80px) !important;
 }
@@ -4059,7 +4065,7 @@ body::after {
   margin-top: -40px !important;
 }
 
-/* FIX 10 — ABOUT TEAM */
+/* ── Fix 10: About Team ── */
 .team-label {
   font-family: 'Caveat', cursive;
   font-size: 20px;
@@ -4118,7 +4124,7 @@ body::after {
   line-height: 1.6;
 }
 
-/* FIX 12 — ACTIVE NAV */
+/* ── Fix 12: Active Nav ── */
 .nav-links a.active::after {
   width: 100% !important;
   height: 3px !important;
@@ -4129,7 +4135,7 @@ body::after {
   text-shadow: 0 0 20px rgba(61,61,255,0.6) !important;
 }
 
-/* FIX 13 — CLIENTS STRIP */
+/* ── Fix 13: Clients Strip ── */
 .clients-strip {
   background: #0a0a0a;
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -4170,7 +4176,7 @@ body::after {
   font-size: 18px;
 }
 
-/* FIX 15 — HERO SCROLL */
+/* ── Fix 15: Hero Scroll ── */
 .hero-scroll {
   position: absolute;
   bottom: 32px;
@@ -4199,7 +4205,7 @@ body::after {
 
 
 
-/* FIX 6 — SERVICE BADGE */
+/* ── Fix 6: Service Badge ── */
 .service-badge {
   display: inline-block;
   font-family: 'Barlow Condensed', sans-serif;
@@ -4215,9 +4221,9 @@ body::after {
   display: inline-block;
 }
 
-/* ══════════════════════════════════════════
+/* ========================================
    AI VOICE AGENT (FLOATING UI)
-   ══════════════════════════════════════════ */
+   ======================================== */
 
 #ai-agent-btn {
   position: fixed;

@@ -1,9 +1,15 @@
+// ══════════════════════════════════════════
+// IMPORTS & SETUP
+// ══════════════════════════════════════════
 const { OpenAI } = require('openai');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'dummy_key_for_local_startup',
 });
 
+// ══════════════════════════════════════════
+// SYSTEM PROMPT & TOOL DEFINITION
+// ══════════════════════════════════════════
 const SYSTEM_PROMPT = `You are the Blink Beyond AI assistant. Answer questions about this digital marketing agency concisely. Proactively use the surf_page tool to physically guide the user to the relevant sections of the website as you explain them. Do not use markdown or complex formatting in your answers because they will be read aloud through text-to-speech.`;
 
 const surfPageTool = {
@@ -14,14 +20,14 @@ const surfPageTool = {
     parameters: {
       type: "object",
       properties: {
-        action: { 
-          type: "string", 
+        action: {
+          type: "string",
           enum: ["scroll", "navigate"],
           description: "Use 'scroll' to move to an element on the current page. Use 'navigate' to go to a different page."
         },
-        target: { 
-          type: "string", 
-          description: "If action is 'scroll', provide a CSS selector (e.g., '.footer', '#services', '.hero'). If action is 'navigate', provide a pathname (e.g., 'index.html', 'about.html', 'services.html', 'contact.html')." 
+        target: {
+          type: "string",
+          description: "If action is 'scroll', provide a CSS selector (e.g., '.footer', '#services', '.hero'). If action is 'navigate', provide a pathname (e.g., 'index.html', 'about.html', 'services.html', 'contact.html')."
         }
       },
       required: ["action", "target"]
@@ -29,8 +35,11 @@ const surfPageTool = {
   }
 };
 
+// ══════════════════════════════════════════
+// HANDLER
+// ══════════════════════════════════════════
 module.exports = async function handler(req, res) {
-  // CORS configuration
+  // ── CORS & Preflight ──
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -44,6 +53,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  // ── Request Validation ──
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -56,12 +66,13 @@ module.exports = async function handler(req, res) {
     }
 
     if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: 'OpenAI API key not configured',
         response: 'System error: Missing API Key configuration.'
       });
     }
 
+    // ── OpenAI Request ──
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -74,7 +85,7 @@ module.exports = async function handler(req, res) {
 
     const choice = response.choices[0];
     const responseMessage = choice.message;
-    
+
     let surfCommand = null;
     let replyText = responseMessage.content;
 
@@ -84,7 +95,7 @@ module.exports = async function handler(req, res) {
       if (toolCall.function.name === 'surf_page') {
         surfCommand = JSON.parse(toolCall.function.arguments);
       }
-      
+
       // If the model called a function but didn't provide a text response,
       // we might want to generate a quick placeholder or fetch a follow-up.
       // Usually, gpt-4o-mini provides content ALONG with the tool call.
@@ -97,14 +108,16 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // ── Response ──
     res.status(200).json({
       response: replyText,
       surfCommand: surfCommand
     });
 
   } catch (error) {
+    // ── Error Handling ──
     console.error('API Error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'An error occurred during processing.',
       response: "I'm sorry, I'm experiencing some technical difficulties right now."
     });

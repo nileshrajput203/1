@@ -1,7 +1,10 @@
+// ══════════════════════════════════════════
+// IMPORTS & CONFIG
+// ══════════════════════════════════════════
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const agentHandler = require('./api/agent.js'); // Import edge function natively
+const agentHandler = require('./api/agent.js');
 
 const PORT = 8080;
 
@@ -15,10 +18,12 @@ const mimeTypes = {
   '.webp': 'image/webp'
 };
 
+// ══════════════════════════════════════════
+// SERVER
+// ══════════════════════════════════════════
 const server = http.createServer(async (req, res) => {
-  // Mock Vercel Edge matching for /api/agent
+  // ── API Route Handler ──
   if (req.url.startsWith('/api/agent')) {
-    // Collect body for POST
     let body = [];
     req.on('data', chunk => body.push(chunk));
     req.on('end', async () => {
@@ -29,8 +34,7 @@ const server = http.createServer(async (req, res) => {
       } else {
           req.body = {};
       }
-      
-      // Wrapper around res.status().json() to mock express/vercel format
+
       const mockRes = {
         setHeader: res.setHeader.bind(res),
         status: function(code) {
@@ -49,10 +53,9 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Serve Static Files
+  // ── Static File Server ──
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
-  
-  // Clean query strings if they exist
+
   if (filePath.includes('?')) {
      filePath = filePath.split('?')[0];
   }
@@ -78,6 +81,9 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
+// ══════════════════════════════════════════
+// SERVER START
+// ══════════════════════════════════════════
 server.listen(PORT, Object.assign({
   host: '0.0.0.0'
 }), () => {

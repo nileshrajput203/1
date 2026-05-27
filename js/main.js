@@ -3,7 +3,9 @@
    ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ── Premium Branded Splash Screen ──
+  /* ========================================
+     PREMIUM BRANDED SPLASH SCREEN
+     ======================================== */
   const loader = document.getElementById('page-loader');
     // URL override for testing: ?loader=show forces the preloader to run
     try {
@@ -87,7 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── Split Letters & Magnetic Effect for Hero Play Reel ──
+  /* ========================================
+     SPLIT LETTERS & MAGNETIC EFFECT
+     ======================================== */
   function splitWord(el,text){
     if(el) el.innerHTML=[...text].map(l=>`<span class="letter">${l}</span>`).join('');
   }
