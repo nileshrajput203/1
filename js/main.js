@@ -314,46 +314,72 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Parallax Scroll-Driven Image Animation ──
   const parallaxSections = document.querySelectorAll('.parallax-word-section');
   if (parallaxSections.length && window.innerWidth > 600) {
-    const updateParallax = () => {
-      parallaxSections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const sectionHeight = section.offsetHeight;
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate scroll progress through this section (0 = just entered, 1 = fully passed)
-        const scrolled = -rect.top;
-        const totalScroll = sectionHeight - viewportHeight;
-        const progress = Math.max(0, Math.min(1, scrolled / totalScroll));
-        
-        const imgs = section.querySelectorAll('.parallax-img');
-        imgs.forEach((img, i) => {
-          const speed = parseFloat(img.dataset.speed) || 0.6;
-          
-          // Stagger: each image starts slightly later (smaller gap for 6 images)
-          const stagger = i * 0.05;
-          const imgProgress = Math.max(0, Math.min(1, (progress - stagger) / (1 - stagger)));
-          
-          // Ease function — ease-out cubic for smooth deceleration
-          const eased = 1 - Math.pow(1 - imgProgress, 3);
-          
-          // Y translation: subtle drift while staying on screen
-          const currentY = 12 * (1 - eased * speed);
-          
-          // Scale: keep images readable while still animating
-          const scale = 0.85 + 0.15 * eased;
-          
-          // Opacity: keep all images visible, still easing in
-          const opacity = Math.max(0.45, Math.min(1, imgProgress * 3.3));
-          
-          img.style.transform = `translateY(${currentY}vh) scale(${scale})`;
-          img.style.opacity = opacity;
+    parallaxSections.forEach((section, i) => {
+      // Stacking order for pinned sections
+      gsap.set(section, { zIndex: i + 1 });
+
+      const inner = section.querySelector('.parallax-sticky');
+      if (!inner) return;
+
+      // Pin current section when it reaches the bottom
+      if (i < parallaxSections.length - 1) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'bottom bottom',
+          end: 'bottom top',
+          pin: true,
+          pinSpacing: false,
         });
+      }
+
+      // Rotate incoming section like a card
+      if (i > 0) {
+        gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
+        gsap.to(inner, {
+          rotation: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'top 25%',
+            scrub: true,
+          },
+        });
+      }
+
+      // Parallax Images Animation via GSAP
+      const imgs = section.querySelectorAll('.parallax-img');
+      imgs.forEach((img, index) => {
+        const speed = parseFloat(img.dataset.speed) || 0.6;
+        const isLeft = index % 2 === 0;
+        const directionX = isLeft ? -1 : 1;
+        
+        // Use fromTo to ensure scrub correctly interpolates between these exact values
+        gsap.fromTo(img, 
+          {
+            x: `${directionX * 15}vw`,
+            y: `${25 * speed}vh`,
+            rotation: directionX * 15,
+            scale: 0.85,
+            opacity: 0,
+          },
+          {
+            x: "0vw",
+            y: "0vh",
+            rotation: 0,
+            scale: 1,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom", 
+              end: "top top",      
+              scrub: true,
+            }
+          }
+        );
       });
-      
-      requestAnimationFrame(updateParallax);
-    };
-    
-    requestAnimationFrame(updateParallax);
+    });
   }
 
   // ── Contact form interaction ──
@@ -1285,4 +1311,39 @@ window.addEventListener('load', () => {
   });
 
   observer.observe(footer);
+})();
+
+// ══════════════════════════════════════════
+// Team Showcase Scroll Animation
+// ══════════════════════════════════════════
+(function() {
+  const teamSection = document.querySelector('.team-showcase-section');
+  const teamItems = document.querySelectorAll('.team-img-wrap');
+  
+  if (teamSection && teamItems.length) {
+    teamItems.forEach((item, i) => {
+      // Randomize the starting Y offset based on index for a more organic feel
+      const startY = 40 + (i % 3) * 20;
+      
+      gsap.fromTo(item, 
+        { 
+          scale: 0.5, 
+          opacity: 0, 
+          y: `${startY}vh` 
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          y: "0vh",
+          ease: "none",
+          scrollTrigger: {
+            trigger: item,
+            start: "top bottom", // Start when it enters the viewport
+            end: "center 40%",   // Finish scaling when it reaches slightly above center
+            scrub: true
+          }
+        }
+      );
+    });
+  }
 })();
