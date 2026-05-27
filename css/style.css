@@ -2765,6 +2765,7 @@ select {
   font-size: clamp(48px, 8vw, 110px);
   text-transform: uppercase;
   line-height: 0.95;
+  color: var(--blue);
 }
 
 .contact-left h2 .blue {
@@ -3241,14 +3242,6 @@ select {
 }
 .footer-brand-text:hover {
   color: rgba(255,255,255,0.75);
-}
-.footer-brand-wrap::before {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.08);
-  margin-bottom: 24px;
 }
 
 /* Copyright bar */
@@ -3907,7 +3900,7 @@ body::after {
 .contact-card {
   background: #111111;
   border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 20px;
+  border-radius: 24px;
   color: #ffffff;
 }
 .contact-card h3 {
@@ -3917,39 +3910,50 @@ body::after {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 28px;
+  margin-bottom: 10px;
+}
+.contact-intro {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 22px;
 }
 .contact-card .form-group label {
-  color: rgba(255,255,255,0.5);
-  font-size: 11px;
-  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
+}
+.contact-card .form-group {
+  margin-bottom: 18px;
 }
 .contact-card input,
 .contact-card textarea,
 .contact-card select {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 12px;
   color: #ffffff;
   padding: 14px 16px;
-  height: 50px;
+  height: 52px;
   font-size: 14px;
   width: 100%;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 .contact-card input:focus,
 .contact-card textarea:focus {
   border-color: #3D3DFF;
-  background: rgba(61,61,255,0.06);
+  background: rgba(61,61,255,0.08);
+  box-shadow: 0 0 0 3px rgba(61,61,255,0.2);
   outline: none;
 }
 .contact-card input::placeholder,
 .contact-card textarea::placeholder {
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.32);
 }
 .contact-card textarea {
-  height: 120px;
+  height: 140px;
   resize: vertical;
 }
 .contact-card .checkbox-group label {
@@ -3972,11 +3976,11 @@ body::after {
 }
 .contact-card button[type="submit"],
 .contact-card .submit-btn {
-  background: #3D3DFF;
+  background: linear-gradient(135deg, #3D3DFF 0%, #5a5aff 100%);
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  height: 52px;
+  border-radius: 12px;
+  height: 56px;
   width: 100%;
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 16px;
@@ -3984,12 +3988,14 @@ body::after {
   letter-spacing: 3px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  margin-top: 8px;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  margin-top: 12px;
+  box-shadow: 0 12px 30px rgba(61,61,255,0.25);
 }
 .contact-card button[type="submit"]:hover {
-  background: #5555ff;
+  background: linear-gradient(135deg, #4a4aff 0%, #6b6bff 100%);
   transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(61,61,255,0.35);
 }
 
 /* ── Fix 4: Hero Pills ── */
