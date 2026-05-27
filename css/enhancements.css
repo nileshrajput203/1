@@ -526,6 +526,12 @@
   align-items: start;
 }
 
+.howwework-left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .howwework-title {
   font-size: clamp(40px, 5.5vw, 72px);
   letter-spacing: -1px;
@@ -725,7 +731,13 @@
   display: flex;
   justify-content: center;
   gap: clamp(24px, 5vw, 64px);
+  flex-wrap: nowrap;
   box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+}
+
+.trusted-stat {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .trusted-stat-num {
