@@ -1325,66 +1325,33 @@ select {
   }
 }
 
-/* Mobile — show images in organized 2-column grid */
-@media (max-width: 600px) {
-  .parallax-word-section {
-    height: auto;
-    padding: clamp(60px, 10vh, 100px) 0;
-  }
-
+/* Mobile — scaled down desktop view, no grid change */
+@media (max-width: 900px) {
   .parallax-sticky {
-    position: relative;
-    height: auto;
-    min-height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .parallax-text-content {
-    order: -1;
-  }
-
-  .parallax-images {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    width: 100%;
-    pointer-events: auto;
-    inset: auto;
-    z-index: 1;
+    padding: clamp(40px, 6vh, 64px) 24px;
   }
 
   .parallax-img {
-    position: relative;
-    opacity: 1;
-    transform: none;
-    width: 100%;
-    height: 110px;
-    left: auto;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    will-change: auto;
+    width: clamp(90px, 12vw, 140px);
+    height: clamp(60px, 8vw, 110px);
   }
 
   .parallax-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
   }
 
-  .pimg-1,
-  .pimg-2,
-  .pimg-3,
-  .pimg-4,
-  .pimg-5,
-  .pimg-6 {
-    width: 100%;
-    height: auto;
+  .service-big-word {
+    font-size: clamp(64px, 18vw, 100px);
+  }
+
+  .script-label {
+    font-size: clamp(14px, 4vw, 20px);
+  }
+
+  .service-word-desc {
+    font-size: 13px;
+    max-width: 100%;
+    line-height: 1.6;
   }
 }
 
