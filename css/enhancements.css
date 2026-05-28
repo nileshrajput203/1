@@ -1162,18 +1162,20 @@
     --container-px: 20px;
   }
 
-  /* ── Ticker: full-width on mobile, no pill shape, soft fade ── */
+  /* ── Ticker: in normal flow on mobile so hero can sit cleanly below it ── */
   .ticker-wrap {
-    position: absolute !important;
-    top: 87px !important;
-    left: 0 !important;
-    right: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
     width: 100% !important;
     max-width: 100% !important;
-    transform: none !important;
     border-radius: 0 !important;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
+    /* Push it below the absolute-positioned navbar */
+    margin-top: calc(var(--nav-height) + 15px) !important;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
   }
 
   /* HERO — COMPLETE MOBILE REDESIGN */
@@ -1185,7 +1187,8 @@
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: center !important;
-    padding: 165px 20px 80px !important;
+    /* No need for large top padding — ticker is now in flow above hero */
+    padding: 40px 20px 80px !important;
     background: #F3F3F4 !important;
     overflow: visible !important;
     margin: 0 !important;
