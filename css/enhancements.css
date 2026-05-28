@@ -1162,6 +1162,20 @@
     --container-px: 20px;
   }
 
+  /* ── Ticker: full-width on mobile, no pill shape, soft fade ── */
+  .ticker-wrap {
+    position: absolute !important;
+    top: 87px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
+  }
+
   /* HERO — COMPLETE MOBILE REDESIGN */
   .hero-page {
     width: 100% !important;
@@ -1169,9 +1183,9 @@
     min-height: auto !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     align-items: center !important;
-    padding: 100px 20px 80px !important;
+    padding: 165px 20px 80px !important;
     background: #F3F3F4 !important;
     overflow: visible !important;
     margin: 0 !important;
