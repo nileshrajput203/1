@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Parallax Scroll-Driven Image Animation ──
   const parallaxSections = document.querySelectorAll('.parallax-word-section');
-  if (parallaxSections.length && window.innerWidth > 600) {
+  if (parallaxSections.length && window.innerWidth > 768) {
     parallaxSections.forEach((section, i) => {
       // Stacking order for pinned sections
       gsap.set(section, { zIndex: i + 1 });

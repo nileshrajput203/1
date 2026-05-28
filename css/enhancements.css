@@ -1422,28 +1422,130 @@
     letter-spacing: 2px;
   }
 
-  /* ── Parallax word sections ── */
+  /* ── Blink / Build / Boom sections — complete mobile layout ── */
   .parallax-word-section {
-    min-height: auto;
-  }
-
-  .service-big-word {
-    font-size: clamp(72px, 19vw, 120px);
-    letter-spacing: -3px;
-  }
-
-  .script-label {
-    font-size: clamp(16px, 4.5vw, 24px);
-  }
-
-  .service-word-desc {
-    font-size: 14px;
-    max-width: 100%;
-    line-height: 1.7;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 52px 24px 40px !important;
+    background: #F3F3F4 !important;
+    overflow: visible !important;
   }
 
   .parallax-sticky {
-    padding: clamp(40px, 6vh, 64px) 24px;
+    position: relative !important;
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 0 !important;
+    /* Kill GSAP-applied transforms on mobile */
+    transform: none !important;
+    will-change: auto !important;
+    transform-origin: unset !important;
+    rotation: 0 !important;
+  }
+
+  .parallax-text-content {
+    width: 100% !important;
+    text-align: left !important;
+    order: -1 !important;
+    margin-bottom: 28px !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* service-word-wrap must be flex so absolute labels flow in order */
+  .service-word-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    position: relative !important;
+    margin-bottom: 14px !important;
+    overflow: visible !important;
+  }
+
+  /* Reset script labels from absolute to in-flow */
+  .script-label,
+  .script-label.top-left,
+  .script-label.bottom-right {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+    right: auto !important;
+    display: block !important;
+    white-space: normal !important;
+    font-family: var(--font-script) !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    color: rgba(0, 0, 0, 0.4) !important;
+    margin: 0 !important;
+  }
+
+  .script-label.top-left {
+    order: 0 !important;
+    margin-bottom: 2px !important;
+  }
+
+  .service-big-word {
+    order: 1 !important;
+    font-size: clamp(60px, 18vw, 90px) !important;
+    letter-spacing: -2px !important;
+    line-height: 0.9 !important;
+    margin: 4px 0 !important;
+  }
+
+  .script-label.bottom-right {
+    order: 2 !important;
+    margin-top: 2px !important;
+    align-self: flex-end !important;
+  }
+
+  .service-word-desc {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+    color: rgba(0, 0, 0, 0.5) !important;
+    max-width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  /* Images: in-flow 2-column grid, always visible */
+  .parallax-images {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: auto !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+
+  .parallax-img,
+  .pimg-1, .pimg-2, .pimg-3,
+  .pimg-4, .pimg-5, .pimg-6 {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 130px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .parallax-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+    display: block !important;
   }
 
   /* ── Trusted section ── */
