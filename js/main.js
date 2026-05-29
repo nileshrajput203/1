@@ -2,6 +2,12 @@
    Blink Beyond — Shared JavaScript
    ======================================== */
 
+// Register GSAP plugins immediately if available
+if (typeof gsap !== 'undefined') {
+  if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+  if (typeof Draggable !== 'undefined') gsap.registerPlugin(Draggable);
+}
+
 /* ========================================
    PAGE TRANSITION — BLUE CURTAIN WIPE
    ======================================== */
@@ -9,18 +15,19 @@ if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
 
+// Reset scroll position immediately on script load
+window.scrollTo(0, 0);
+
 window.addEventListener('beforeunload', () => {
   window.scrollTo(0, 0);
 });
 
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory('manual');
-      ScrollTrigger.refresh();
-    }
-  }, 50);
+  window.scrollTo(0, 0);
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory('manual');
+    ScrollTrigger.refresh();
+  }
 });
 
 (function() {
@@ -73,6 +80,7 @@ window.addEventListener('load', () => {
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
   /* ========================================
      FAB TOGGLE (floating action button)
      ======================================== */
