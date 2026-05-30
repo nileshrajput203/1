@@ -1714,42 +1714,58 @@
     line-height: 1.1;
   }
 
-  /* Section clips the circle — allow overflow so full circle is visible */
+  /* ── WHO section: replace broken orbit animation with clean mobile card ── */
+
+  /* Drop the overflow clip so the card can breathe */
   .who-section {
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
-  .who-orbit-container {
-    /* Circle SVG r=175 → needs ≥350px diameter to show fully */
-    width: min(350px, 90vw) !important;
-    /* Let height be driven by in-flow content (the text below the circle) */
-    height: auto !important;
-    overflow: visible !important;
-    margin: 0 auto;
-    position: relative !important;
+  /* Hide animated circle path and orbiting words on mobile */
+  .who-orbit-path,
+  .who-orbit-item {
+    display: none !important;
   }
 
-  /* Pull inner text OUT of the absolute layer:
-     make it position:static so it's in normal flow, then push it
-     below the circle with a top margin equal to the circle height */
-  .who-inner-text {
-    position: static !important;
-    transform: none !important;
-    width: 85% !important;
-    /* margin-top pushes text below the absolutely-positioned circle */
-    margin: min(350px, 90vw) auto 0 !important;
+  /* "WHO WE ARE?" label above the card */
+  .who-right::before {
+    content: "WHO WE ARE?";
+    display: block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 14px;
     text-align: center;
   }
 
-  .who-inner-text p {
-    font-size: 13px !important;
-    line-height: 1.65 !important;
-    color: rgba(255, 255, 255, 0.65) !important;
+  /* Orbit container → frosted glass card */
+  .who-orbit-container {
+    width: 100% !important;
+    height: auto !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    padding: 28px 24px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
   }
 
-  /* Scale orbit items text to stay proportional on small screens */
-  .who-orbit-item {
-    font-size: clamp(20px, 5.5vw, 30px) !important;
+  /* Inner text flows naturally inside the card */
+  .who-inner-text {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  .who-inner-text p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+    color: rgba(255, 255, 255, 0.72) !important;
   }
 
   .whatwedo-section {
