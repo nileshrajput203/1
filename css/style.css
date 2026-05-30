@@ -5064,7 +5064,7 @@ body::after {
 
 /* ── Tap hint — hidden on desktop, shown on mobile via media query ── */
 .flip-tap-hint {
-  display: none;
+  display: flex;
   align-items: center;
   gap: 6px;
   position: absolute;
@@ -5082,6 +5082,7 @@ body::after {
   text-transform: uppercase;
   white-space: nowrap;
   z-index: 3;
+  opacity: 1;
   transition: opacity 0.3s ease;
   animation: hintPulse 2s ease-in-out infinite;
 }
@@ -5091,6 +5092,21 @@ body::after {
   50% { box-shadow: 0 0 0 6px rgba(61, 61, 255, 0.12); }
 }
 
+/* Touch devices: show tap icon + "Tap for info" */
+.hint-icon-hover,
+.hint-text-hover { display: none; }
+.hint-icon-tap,
+.hint-text-tap { display: inline; }
+
+/* Pointer/mouse devices: show hover icon + "Hover for info" */
+@media (hover: hover) and (pointer: fine) {
+  .hint-icon-tap,
+  .hint-text-tap { display: none; }
+  .hint-icon-hover,
+  .hint-text-hover { display: inline; }
+}
+
+/* Hide hint while the card is being hovered/focused/flipped */
 .flip-card:hover .flip-tap-hint,
 .flip-card:focus .flip-tap-hint,
 .flip-card.flipped .flip-tap-hint {
@@ -5098,8 +5114,8 @@ body::after {
   pointer-events: none;
 }
 
-/* Once tapped once, permanently hide the hint for that card */
-.flip-card.hint-used .flip-tap-hint {
+/* Once user has interacted with any card, permanently hide ALL hints */
+body.bb-flip-hint-seen .flip-tap-hint {
   display: none !important;
 }
 

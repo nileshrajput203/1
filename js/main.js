@@ -1500,19 +1500,42 @@ window.addEventListener('load', () => {
     }, { once: true });
   });
 
-  // ── Founder cards: "Tap for info" ──
-  document.querySelectorAll('.flip-card').forEach(function (card) {
+}());
+
+// ── Founder flip-cards: works on ALL screens (hover + tap + click) ──
+(function () {
+  var flipCards = document.querySelectorAll('.flip-card');
+  if (!flipCards.length) return;
+
+  // Restore saved state immediately — no hint flash on revisit
+  if (localStorage.getItem('bbFlipHintSeen')) {
+    document.body.classList.add('bb-flip-hint-seen');
+  }
+
+  function markHintsSeen() {
+    if (document.body.classList.contains('bb-flip-hint-seen')) return;
+    localStorage.setItem('bbFlipHintSeen', '1');
+    document.body.classList.add('bb-flip-hint-seen');
+  }
+
+  flipCards.forEach(function (card) {
+    // Desktop: first mouseenter permanently hides all hints
+    card.addEventListener('mouseenter', function () {
+      markHintsSeen();
+    }, { once: true });
+
+    // All screens: click toggles flip + permanently hides all hints
     card.addEventListener('click', function (e) {
       e.stopPropagation();
       card.classList.toggle('flipped');
-      // Permanently hide the hint for this card after first tap
-      card.classList.add('hint-used');
+      markHintsSeen();
     });
   });
 
+  // Click outside any card → unflip all
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.flip-card')) {
-      document.querySelectorAll('.flip-card.flipped').forEach(function (card) {
+      flipCards.forEach(function (card) {
         card.classList.remove('flipped');
       });
     }
