@@ -1971,6 +1971,15 @@
 }
 
 /* ========================================
+   BLINK / BUILD / BOOM — WRAPPER
+   Neutral on desktop; creates sticky boundary on mobile
+   ======================================== */
+.bbb-stack-wrapper {
+  display: block;
+  position: relative;
+}
+
+/* ========================================
    BLINK / BUILD / BOOM — MOBILE STICKY STACK
    Overrides earlier mobile rules (placed last so !important wins)
    ======================================== */
