@@ -3465,7 +3465,14 @@ body.nav-open .ticker-wrap {
   }
 
   .footer-brand-wrap {
-    height: 80px;
+    height: auto;
+    overflow: hidden;
+    line-height: 0.88;
+  }
+
+  .footer-brand-text {
+    font-size: 17vw;
+    white-space: nowrap;
   }
 }
 

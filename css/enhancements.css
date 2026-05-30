@@ -1853,10 +1853,7 @@
     height: 46px;
   }
 
-  /* Ensure page content has enough bottom clearance for the FAB */
-  body {
-    padding-bottom: 80px;
-  }
+  /* FAB is position:fixed — no body padding needed */
 
   /* ── Footer ── */
   .footer-top {
