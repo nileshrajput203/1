@@ -26,7 +26,12 @@ window.addEventListener('load', () => {
   window.scrollTo(0, 0);
   if (typeof ScrollTrigger !== 'undefined') {
     ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory('manual');
-    ScrollTrigger.refresh();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        ScrollTrigger.refresh();
+      });
+    });
   }
 });
 
@@ -39,15 +44,23 @@ window.addEventListener('load', () => {
 
   if (cameFromTransition) {
     try { sessionStorage.removeItem('bb_page_transition'); } catch(e) {}
-    overlay.style.transition = 'none';
-    overlay.style.transform = 'translateY(0%)';
-    overlay.style.pointerEvents = 'all';
-    overlay.offsetHeight;
-    overlay.style.transition = 'transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)';
+    // Overlay is already covering the screen via .bb-entering CSS + inline bg set in <head>.
+    // Remove the class so GSAP can take over, then slide the curtain upward.
+    document.documentElement.classList.remove('bb-entering');
+    gsap.set(overlay, { y: '0%', pointerEvents: 'all' });
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        overlay.style.transform = 'translateY(-100%)';
-        overlay.style.pointerEvents = 'none';
+        gsap.to(overlay, {
+          y: '-100%',
+          duration: 0.9,
+          ease: 'power3.inOut',
+          onComplete: function() {
+            gsap.set(overlay, { pointerEvents: 'none' });
+            // Clear the blue background set inline in <head> so the page renders normally
+            document.documentElement.style.background = '';
+            document.documentElement.style.backgroundColor = '';
+          }
+        });
       });
     });
   }
@@ -65,16 +78,14 @@ window.addEventListener('load', () => {
 
     try { sessionStorage.setItem('bb_page_transition', '1'); } catch(e) {}
 
-    overlay.style.transition = 'none';
-    overlay.style.transform = 'translateY(100%)';
-    overlay.style.pointerEvents = 'all';
-    overlay.offsetHeight;
-    overlay.style.transition = 'transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)';
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        overlay.style.transform = 'translateY(0%)';
-        setTimeout(function() { window.location.href = dest; }, 640);
-      });
+    gsap.set(overlay, { y: '100%', pointerEvents: 'all' });
+    gsap.to(overlay, {
+      y: '0%',
+      duration: 0.7,
+      ease: 'power3.inOut',
+      onComplete: function() {
+        window.location.href = dest;
+      }
     });
   });
 })();
@@ -337,11 +348,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll trigger to pin the hero page and drive the scrollProg
     if (typeof ScrollTrigger !== 'undefined') {
+      const isMobile = window.innerWidth <= 768;
       ScrollTrigger.create({
         trigger: heroPage,
         start: "top top",
-        end: "+=900", // Reduced scroll distance to eliminate extra space
-        pin: true,
+        end: "+=900",
+        pin: !isMobile,
+        pinSpacing: !isMobile,
         onUpdate: (self) => {
           targetProg = self.progress;
           if (!rafId) {
@@ -405,7 +418,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       navLinks.classList.toggle('open');
-      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+      const isOpen = navLinks.classList.contains('open');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      document.body.classList.toggle('nav-open', isOpen);
     });
     // Close on link click
     navLinks.querySelectorAll('a').forEach(link => {
@@ -413,6 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.classList.remove('open');
         navLinks.classList.remove('open');
         document.body.style.overflow = '';
+        document.body.classList.remove('nav-open');
       });
     });
   }
@@ -443,89 +459,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ── Parallax Scroll-Driven Image Animation ──
+  // ── Parallax Scroll-Driven Animation ──
   const parallaxSections = document.querySelectorAll('.parallax-word-section');
-  if (parallaxSections.length && window.innerWidth > 768) {
-    parallaxSections.forEach((section, i) => {
-      // Stacking order for pinned sections
-      gsap.set(section, { zIndex: i + 1 });
+  if (parallaxSections.length) {
+    if (window.innerWidth > 768) {
+      // ── Desktop: pin + card-rotation + image parallax ──
+      parallaxSections.forEach((section, i) => {
+        gsap.set(section, { zIndex: i + 1 });
 
-      const inner = section.querySelector('.parallax-sticky');
-      if (!inner) return;
+        const inner = section.querySelector('.parallax-sticky');
+        if (!inner) return;
 
-      // Pin current section when it reaches the bottom
-      if (i < parallaxSections.length - 1) {
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'bottom bottom',
-          end: 'bottom top',
-          pin: true,
-          pinSpacing: false,
-        });
-      }
-
-      // Rotate incoming section like a card
-      if (i > 0) {
-        gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
-        gsap.to(inner, {
-          rotation: 0,
-          ease: 'none',
-          scrollTrigger: {
+        if (i < parallaxSections.length - 1) {
+          ScrollTrigger.create({
             trigger: section,
-            start: 'top bottom',
-            end: 'top 25%',
-            scrub: true,
-          },
-        });
-      }
+            start: 'bottom bottom',
+            end: 'bottom top',
+            pin: true,
+            pinSpacing: false,
+          });
+        }
 
-      // Parallax Images Animation via GSAP
-      const imgs = section.querySelectorAll('.parallax-img');
-      imgs.forEach((img, index) => {
-        const speed = parseFloat(img.dataset.speed) || 0.6;
-        const isLeft = index % 2 === 0;
-        const directionX = isLeft ? -1 : 1;
-        
-        // Use fromTo to ensure scrub correctly interpolates between these exact values
-        gsap.fromTo(img, 
-          {
-            x: `${directionX * 15}vw`,
-            y: `${25 * speed}vh`,
-            rotation: directionX * 15,
-            scale: 0.85,
-            opacity: 0,
-          },
-          {
-            x: "0vw",
-            y: "0vh",
+        if (i > 0) {
+          gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
+          gsap.to(inner, {
             rotation: 0,
-            scale: 1,
-            opacity: 1,
-            ease: "none",
+            ease: 'none',
             scrollTrigger: {
               trigger: section,
-              start: "top bottom", 
-              end: "top top",      
+              start: 'top bottom',
+              end: 'top 25%',
               scrub: true,
-            }
-          }
-        );
-      });
-    });
-  }
-
-  // ── Mobile scroll-reveal for BLINK/BUILD/BOOM sections ──
-  if (window.innerWidth <= 768 && 'IntersectionObserver' in window) {
-    const revealSections = document.querySelectorAll('.parallax-word-section');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          sectionObserver.unobserve(entry.target);
+            },
+          });
         }
+
+        const imgs = section.querySelectorAll('.parallax-img');
+        // 6 unique entry vectors — each image travels from a distinct origin
+        const entryVectors = [
+          { x: '-22vw', y: '-14vh', rot: -20 }, // top-left  → slides from far left + above
+          { x:  '20vw', y: '-16vh', rot:  18 }, // top-right → slides from right + above
+          { x: '-24vw', y:   '6vh', rot: -14 }, // mid-left  → slides from far left
+          { x:  '10vw', y:  '22vh', rot:  12 }, // mid-right → slides from below + slight right
+          { x: '-12vw', y:  '24vh', rot: -22 }, // bot-left  → slides from below + left
+          { x:  '22vw', y:  '18vh', rot:  20 }, // bot-right → slides from below + far right
+        ];
+        imgs.forEach((img, index) => {
+          const vec = entryVectors[index % entryVectors.length];
+          gsap.fromTo(img,
+            { x: vec.x, y: vec.y, rotation: vec.rot, scale: 0.82, opacity: 0 },
+            {
+              x: '0vw', y: '0vh', rotation: 0, scale: 1, opacity: 1, ease: 'none',
+              scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: true }
+            }
+          );
+        });
       });
-    }, { threshold: 0.12 });
-    revealSections.forEach(s => sectionObserver.observe(s));
+    }
+    // Mobile: no animation — sections display statically via CSS
   }
 
   // ── Contact form interaction ──
@@ -657,6 +648,10 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('mouseleave', () => {
       isHovered = false;
       card.classList.remove('is-hovered');
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
     });
   });
 
@@ -1484,8 +1479,8 @@ window.addEventListener('load', () => {
           ease: "none",
           scrollTrigger: {
             trigger: item,
-            start: "top bottom", // Start when it enters the viewport
-            end: "center 40%",   // Finish scaling when it reaches slightly above center
+            start: "top bottom",
+            end: "center 40%",
             scrub: true
           }
         }
@@ -1493,3 +1488,100 @@ window.addEventListener('load', () => {
     });
   }
 })();
+
+/* ========================================
+   INFO-CARD EXPLORE HINT — ALL SCREENS
+   Detects device type: touch (mobile/tablet/iPad) vs hover (laptop/computer)
+   Touch  → "TAP TO EXPLORE"   — hint hides permanently on first tap
+   Hover  → "HOVER TO EXPLORE" — hint hides permanently on first mouseenter
+   ======================================== */
+(function () {
+  var infocards = document.querySelectorAll('.info-card');
+  if (!infocards.length) return;
+
+  // Same media query used in CSS — true for laptop/desktop with a real mouse
+  var isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Restore saved state immediately — no hint flash on revisit
+  if (localStorage.getItem('bbCardHintSeen')) {
+    document.body.classList.add('bb-card-hint-seen');
+  }
+
+  function markCardHintSeen() {
+    if (document.body.classList.contains('bb-card-hint-seen')) return;
+    localStorage.setItem('bbCardHintSeen', '1');
+    document.body.classList.add('bb-card-hint-seen');
+  }
+
+  if (isHoverDevice) {
+    // ── LAPTOP / COMPUTER (mouse hover) ──
+    // Hint text says "Hover to Explore" — mark seen on first mouseenter
+    infocards.forEach(function (card) {
+      card.addEventListener('mouseenter', function () {
+        markCardHintSeen();
+      }, { once: true });
+    });
+  } else {
+    // ── MOBILE / TABLET / iPAD (touch) ──
+    // Hint text says "Tap to Explore" — mark seen on first tap/click
+    infocards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        markCardHintSeen();
+      }, { once: true });
+    });
+  }
+}());
+
+// ── Founder flip-cards ──
+// Detects device type: touch (mobile/tablet/iPad) vs hover (laptop/computer)
+// Touch  → "TAP FOR INFO"   — click toggles the card flip
+// Hover  → "HOVER FOR INFO" — CSS hover reveals info, no flip needed
+(function () {
+  var flipCards = document.querySelectorAll('.flip-card');
+  if (!flipCards.length) return;
+
+  // Same media query used in CSS — matches laptop/desktop with a real mouse
+  var isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Restore saved state immediately so hint never flashes on revisit
+  if (localStorage.getItem('bbFlipHintSeen')) {
+    document.body.classList.add('bb-flip-hint-seen');
+  }
+
+  function markHintsSeen() {
+    if (document.body.classList.contains('bb-flip-hint-seen')) return;
+    localStorage.setItem('bbFlipHintSeen', '1');
+    document.body.classList.add('bb-flip-hint-seen');
+  }
+
+  if (isHoverDevice) {
+    // ── LAPTOP / COMPUTER (mouse hover) ──
+    // Info is shown via CSS :hover — no click-flip needed.
+    // Just mark hints as permanently seen on first mouseenter.
+    flipCards.forEach(function (card) {
+      card.addEventListener('mouseenter', function () {
+        markHintsSeen();
+      }, { once: true });
+    });
+
+  } else {
+    // ── MOBILE / TABLET / iPAD (touch) ──
+    // No hover, so tapping flips the card to reveal info.
+    flipCards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        e.stopPropagation();
+        card.classList.toggle('flipped');
+        markHintsSeen();
+      });
+    });
+
+    // Tap outside any card → unflip all
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.flip-card')) {
+        flipCards.forEach(function (card) {
+          card.classList.remove('flipped');
+        });
+      }
+    });
+  }
+}());

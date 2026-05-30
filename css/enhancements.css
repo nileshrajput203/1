@@ -24,6 +24,7 @@
 
 .loader-wordmark-wrap {
   position: relative;
+  overflow: visible;
 }
 
 /* Animated scan-line behind wordmark */
@@ -41,7 +42,8 @@
 
 .loader-fill-ghost,
 .loader-fill-text {
-  letter-spacing: clamp(4px, 1vw, 12px);
+  font-size: clamp(24px, 10.5vw, 210px);
+  letter-spacing: clamp(1px, 0.35vw, 8px);
 }
 
 .loader-tagline {
@@ -156,6 +158,11 @@
   will-change: transform;
 }
 
+/* Set by inline <head> script before first paint — prevents content flash on page enter */
+.bb-entering .page-transition-overlay {
+  transform: translateY(0%) !important;
+}
+
 /* ========================================
    HERO SECTION — IMPROVED
    ======================================== */
@@ -188,16 +195,19 @@
 
 .hero-location::before {
   content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--blue);
+  width: 8px;
+  height: 8px;
+  background: #3D3DFF;
   border-radius: 50%;
-  animation: locPulse 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(61, 61, 255, 0.55);
+  animation: locPulse 2s ease-out infinite;
 }
 
 @keyframes locPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.75); }
+  0%   { box-shadow: 0 0 0 0   rgba(61, 61, 255, 0.55); }
+  60%  { box-shadow: 0 0 0 9px rgba(61, 61, 255, 0);    }
+  100% { box-shadow: 0 0 0 0   rgba(61, 61, 255, 0);    }
 }
 
 .hero-headline {
@@ -946,90 +956,146 @@
 /* ========================================
    FAB — IMPROVED
    ======================================== */
+/* ── FAB SPEED DIAL — fixed bottom-right, options fan upward ── */
 .fab-container {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9000;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
-.fab-toggle {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 24px rgba(61,61,255,0.4);
-  transition: transform 0.35s var(--ease-spring), box-shadow 0.3s ease, background 0.3s ease;
-  border: none;
-  color: white;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.fab-toggle:hover {
-  box-shadow: 0 10px 36px rgba(61,61,255,0.55);
-  transform: scale(1.07);
-}
-
-.fab-toggle.open {
-  background: #1a1a1a;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
-}
-
-.fab-toggle .icon-chat { display: block; }
-.fab-toggle .icon-close { display: none; }
-.fab-toggle.open .icon-chat { display: none; }
-.fab-toggle.open .icon-close { display: block; }
-
+/* Options sit ABOVE the toggle; hidden by default */
 .fab-options {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
-  opacity: 0;
+  gap: 12px;
   pointer-events: none;
-  transform: translateY(12px) scale(0.95);
-  transition: opacity 0.3s ease, transform 0.35s var(--ease-smooth);
 }
 
-.fab-options.open {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0) scale(1);
-}
-
+/* Each individual option — hidden, waiting to slide up */
 .fab-option {
-  width: 46px;
-  height: 46px;
+  position: relative;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  transition: transform 0.35s var(--ease-spring), box-shadow 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.28);
   border: none;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(24px) scale(0.8);
+  transition:
+    opacity 0.28s ease,
+    transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
 }
 
-.fab-option:hover {
+/* Label tooltip to the left of each option */
+.fab-option::after {
+  content: attr(aria-label);
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10,10,10,0.82);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+/* Slide options upward when open */
+.fab-options.open {
+  pointer-events: all;
+}
+.fab-options.open .fab-option {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+/* Show label on hover of open option */
+.fab-options.open .fab-option:hover::after {
+  opacity: 1;
+}
+.fab-options.open .fab-option:hover {
   transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.36);
 }
 
+/* Stagger each child (nth-child counts from top of DOM, reversed visually) */
+.fab-options.open .fab-option:nth-child(1) { transition-delay: 0.04s; }
+.fab-options.open .fab-option:nth-child(2) { transition-delay: 0.10s; }
+.fab-options.open .fab-option:nth-child(3) { transition-delay: 0.16s; }
+
+/* WhatsApp */
 .whatsapp-btn {
   background: #25D366;
   color: white;
 }
 
-.whatsapp-btn:hover {
-  box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+/* ── Toggle button ── */
+.fab-toggle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 26px rgba(61,61,255,0.45);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, background 0.3s ease;
+  border: none;
+  color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
+.fab-toggle:hover {
+  box-shadow: 0 10px 36px rgba(61,61,255,0.6);
+  transform: scale(1.08);
+}
+.fab-toggle.open {
+  background: #111;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+  transform: rotate(45deg);
+}
+.fab-toggle.open:hover {
+  transform: rotate(45deg) scale(1.08);
+}
+
+.fab-toggle .icon-chat  { display: block; }
+.fab-toggle .icon-close { display: none;  }
+.fab-toggle.open .icon-chat  { display: none;  }
+.fab-toggle.open .icon-close { display: block; }
+
+.whatsapp-btn:hover {
+  box-shadow: 0 8px 24px rgba(37,211,102,0.45);
+}
+
+/* ── Kill old style.css hover-based open (we use click/.open class instead) ── */
+.fab-container:hover .fab-options {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(24px) scale(0.8) !important;
+  pointer-events: none !important;
+}
+.fab-container:hover .fab-toggle .icon-chat  { display: block !important; }
+.fab-container:hover .fab-toggle .icon-close { display: none  !important; }
 
 .ai-btn {
   background: #111;
@@ -1119,6 +1185,21 @@
     direction: ltr;
   }
 
+  /* On mobile, even blocks have the header in service-block-right (DOM second).
+     Force it to render first so title always appears above the cards. */
+  .service-block:nth-child(even) .service-block-right {
+    order: -1;
+  }
+  .service-block:nth-child(even) .service-block-left {
+    order: 1;
+  }
+
+  /* Always stack badge above title on mobile — never side-by-side */
+  .service-block-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .who-grid {
     grid-template-columns: 1fr;
     gap: clamp(24px, 4vh, 48px);
@@ -1153,6 +1234,11 @@
   }
 }
 
+/* Hero mobile CTA — hidden on desktop, shown on mobile */
+.hero-mobile-cta {
+  display: none;
+}
+
 /* ========================================
    RESPONSIVE — MOBILE  ≤ 768px
    ======================================== */
@@ -1172,8 +1258,8 @@
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 0 !important;
-    /* Push it below the absolute-positioned navbar */
-    margin-top: calc(var(--nav-height) + 15px) !important;
+    /* Push it below the absolute-positioned navbar with breathing room */
+    margin-top: calc(var(--nav-height) + 32px) !important;
     -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
     mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
   }
@@ -1187,8 +1273,8 @@
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: center !important;
-    /* No need for large top padding — ticker is now in flow above hero */
-    padding: 40px 20px 80px !important;
+    /* Tight gap between ticker and badge */
+    padding: 14px 20px 80px !important;
     background: #F3F3F4 !important;
     overflow: visible !important;
     margin: 0 !important;
@@ -1291,13 +1377,14 @@
     display: inline-block !important;
   }
 
-  /* Mobile hero CTA block — inject via CSS after pills */
+  /* Mobile hero CTA block — shown below pills on mobile */
   .hero-mobile-cta {
-    display: flex;
-    gap: 12px;
-    margin-top: clamp(24px, 4vh, 40px);
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    margin-top: 24px !important;
+    width: 100% !important;
   }
 
   .hero-mobile-cta a {
@@ -1514,70 +1601,17 @@
     margin-top: 8px !important;
   }
 
-  /* Images: in-flow 2-column grid */
+  /* Images: hidden on mobile */
   .parallax-images {
-    position: relative !important;
-    inset: auto !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-    width: 100% !important;
-    height: auto !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
+    display: none !important;
   }
 
-  .parallax-img,
-  .pimg-1, .pimg-2, .pimg-3,
-  .pimg-4, .pimg-5, .pimg-6 {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: 130px !important;
-    /* start hidden — Intersection Observer will trigger transition */
-    opacity: 0 !important;
-    transform: translateY(18px) scale(0.95) !important;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    will-change: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .parallax-img img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    border-radius: 10px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
-    display: block !important;
-  }
-
-  /* Text content: slide-up reveal on scroll */
+  /* Text content: always visible, no animation */
   .parallax-text-content {
-    opacity: 0 !important;
-    transform: translateY(26px) !important;
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-
-  /* ── In-view: triggered by Intersection Observer adding .in-view ── */
-  .parallax-word-section.in-view .parallax-text-content {
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
   }
-
-  .parallax-word-section.in-view .parallax-img {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  /* Stagger each image tile */
-  .parallax-word-section.in-view .pimg-1 { transition-delay: 0.08s !important; }
-  .parallax-word-section.in-view .pimg-2 { transition-delay: 0.15s !important; }
-  .parallax-word-section.in-view .pimg-3 { transition-delay: 0.22s !important; }
-  .parallax-word-section.in-view .pimg-4 { transition-delay: 0.29s !important; }
-  .parallax-word-section.in-view .pimg-5 { transition-delay: 0.36s !important; }
-  .parallax-word-section.in-view .pimg-6 { transition-delay: 0.43s !important; }
 
   /* ── Hero headline staggered load animation ── */
   @keyframes heroWordIn {
@@ -1665,6 +1699,12 @@
     letter-spacing: -1px;
   }
 
+  /* Mobile: flex column so the hint pill aligns correctly */
+  .info-card .info-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   /* ── About page ── */
   .who-section {
     padding-top: calc(var(--nav-height) + 32px);
@@ -1680,10 +1720,58 @@
     line-height: 1.1;
   }
 
+  /* ── WHO section: replace broken orbit animation with clean mobile card ── */
+
+  /* Drop the overflow clip so the card can breathe */
+  .who-section {
+    overflow: hidden !important;
+  }
+
+  /* Hide animated circle path and orbiting words on mobile */
+  .who-orbit-path,
+  .who-orbit-item {
+    display: none !important;
+  }
+
+  /* "WHO WE ARE?" label above the card */
+  .who-right::before {
+    content: "WHO WE ARE?";
+    display: block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  /* Orbit container → frosted glass card */
   .who-orbit-container {
-    width: 260px !important;
-    height: 260px !important;
-    margin: 0 auto;
+    width: 100% !important;
+    height: auto !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    padding: 28px 24px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  /* Inner text flows naturally inside the card */
+  .who-inner-text {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  .who-inner-text p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+    color: rgba(255, 255, 255, 0.72) !important;
   }
 
   .whatwedo-section {
@@ -1692,6 +1780,28 @@
 
   .whatwedo-section .container {
     padding: 0 24px;
+  }
+
+  .whatwedo-label {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .whatwedo-label::before,
+  .whatwedo-label::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--blue);
+    opacity: 0.6;
   }
 
   .whatwedo-display h2 {
@@ -1707,9 +1817,17 @@
     padding: 0 24px;
   }
 
+  .howwework-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .howwework-title {
     font-size: clamp(34px, 9vw, 56px);
     margin-bottom: 28px;
+    text-align: center !important;
+    width: 100%;
   }
 
   .step-item {
@@ -1745,7 +1863,11 @@
   }
 
   .flip-card {
-    height: clamp(300px, 55vw, 400px);
+    height: 460px;
+  }
+
+  .flip-tap-hint {
+    display: flex;
   }
 
   /* ── Testimonials ── */
@@ -1757,23 +1879,27 @@
     font-size: 14px;
   }
 
-  /* ── FAB ── */
+  /* ── FAB — tight bottom-right corner on mobile ── */
   .fab-container {
     bottom: 16px;
     right: 16px;
   }
-
   .fab-toggle {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
+  }
+  .fab-option {
+    width: 46px;
+    height: 46px;
   }
 
-  .fab-option {
-    width: 42px;
-    height: 42px;
-  }
+  /* FAB is position:fixed — no body padding needed */
 
   /* ── Footer ── */
+  .footer-brand-text {
+    color: #ffffff !important;
+  }
+
   .footer-top {
     padding: 40px 0 32px !important;
   }
@@ -1799,6 +1925,118 @@
 
   .contact-section .container {
     padding: 0 24px;
+  }
+
+  /* ── Blink/Build/Boom alternating backgrounds ── */
+  #section-blink {
+    background: #F3F3F4 !important;
+  }
+
+  #section-build {
+    background: #0a0a0a !important;
+  }
+
+  #section-build .service-big-word,
+  #section-build .script-label,
+  #section-build .service-word-desc {
+    color: rgba(255,255,255,0.9) !important;
+  }
+
+  #section-build .script-label {
+    color: rgba(255,255,255,0.35) !important;
+  }
+
+  #section-build .service-word-desc {
+    color: rgba(255,255,255,0.5) !important;
+  }
+
+  #section-boom {
+    background: var(--blue) !important;
+  }
+
+  #section-boom .service-big-word,
+  #section-boom .script-label,
+  #section-boom .service-word-desc {
+    color: rgba(255,255,255,0.9) !important;
+  }
+
+  #section-boom .script-label {
+    color: rgba(255,255,255,0.4) !important;
+  }
+
+  #section-boom .service-word-desc {
+    color: rgba(255,255,255,0.65) !important;
+  }
+
+  /* ── Team showcase mobile ── */
+  .team-showcase-section {
+    padding: 60px 0 40px !important;
+    overflow: hidden !important;
+  }
+
+  .team-sticky-container {
+    position: relative !important;
+    height: auto !important;
+    padding: 0 24px 32px !important;
+    mix-blend-mode: normal !important;
+    color: #000 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .team-overlay-text {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .team-overlay-text h2 {
+    font-size: clamp(52px, 14vw, 80px) !important;
+    letter-spacing: -2px !important;
+    line-height: 0.9 !important;
+    color: #000 !important;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 16px 40px !important;
+  }
+
+  .team-item.t-1, .team-item.t-2,
+  .team-item.t-3, .team-item.t-4,
+  .team-item.t-5, .team-item.t-6,
+  .team-item.t-7, .team-item.t-8 {
+    margin-top: 0 !important;
+  }
+
+  .team-item:nth-child(even) {
+    margin-top: 24px !important;
+  }
+
+  .team-img-wrap {
+    border-radius: 14px !important;
+  }
+
+  /* ── Navbar z-index above mobile menu ── */
+  .navbar {
+    z-index: 100 !important;
+  }
+
+  /* ── Trusted section ── */
+  .trusted-section {
+    padding: clamp(40px, 6vh, 64px) 0 !important;
+  }
+
+  .trusted-header {
+    padding: 0 24px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .trusted-title {
+    font-size: clamp(32px, 9vw, 52px) !important;
   }
 }
 
@@ -1845,7 +2083,7 @@
   }
 
   .flip-card {
-    height: clamp(280px, 65vw, 360px);
+    height: 480px;
   }
 
   .page-header h1 {
@@ -1900,6 +2138,200 @@
   .service-block-title {
     font-size: clamp(72px, 6vw, 96px);
   }
+}
+
+/* ========================================
+   BLINK / BUILD / BOOM — WRAPPER
+   Neutral on desktop; creates sticky boundary on mobile
+   ======================================== */
+.bbb-stack-wrapper {
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ========================================
+   BLINK / BUILD / BOOM — MOBILE STICKY STACK
+   Overrides earlier mobile rules (placed last so !important wins)
+   ======================================== */
+@media (max-width: 768px) {
+
+  /* Each card sticks at top and the next slides over it */
+  #section-blink,
+  #section-build,
+  #section-boom {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #section-blink { z-index: 1; background: #F3F3F4 !important; }
+  #section-build { z-index: 2; background: #0a0a0a !important; }
+  #section-boom  { z-index: 3; background: var(--blue, #3D3DFF) !important; }
+
+  /* Inner wrapper — full size, centered, no GSAP transforms */
+  #section-blink .parallax-sticky,
+  #section-build .parallax-sticky,
+  #section-boom  .parallax-sticky {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: none !important;
+    will-change: auto !important;
+    transform-origin: unset !important;
+    padding: 48px 28px !important;
+    background: transparent !important;
+    gap: 20px !important;
+  }
+
+  /* Text block — centered */
+  #section-blink .parallax-text-content,
+  #section-build .parallax-text-content,
+  #section-boom  .parallax-text-content {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+    order: 0 !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Word wrap — relative so labels sit top-left / bottom-right */
+  #section-blink .service-word-wrap,
+  #section-build .service-word-wrap,
+  #section-boom  .service-word-wrap {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 18px 24px 18px !important;
+    margin-bottom: 20px !important;
+    overflow: visible !important;
+  }
+
+  /* Script labels — absolute, matching desktop positioning */
+  #section-blink .script-label.top-left,
+  #section-build .script-label.top-left,
+  #section-boom  .script-label.top-left {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    font-size: 17px !important;
+    order: unset !important;
+    align-self: unset !important;
+    margin: 0 !important;
+    font-family: var(--font-script, cursive) !important;
+  }
+
+  #section-blink .script-label.bottom-right,
+  #section-build .script-label.bottom-right,
+  #section-boom  .script-label.bottom-right {
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    font-size: 17px !important;
+    order: unset !important;
+    align-self: unset !important;
+    margin: 0 !important;
+    font-family: var(--font-script, cursive) !important;
+  }
+
+  /* Big word — massive and centered */
+  #section-blink .service-big-word,
+  #section-build .service-big-word,
+  #section-boom  .service-big-word {
+    order: 1 !important;
+    font-size: clamp(88px, 30vw, 128px) !important;
+    letter-spacing: -4px !important;
+    line-height: 0.88 !important;
+    margin: 0 !important;
+  }
+
+  /* Description — centered, readable */
+  #section-blink .service-word-desc,
+  #section-build .service-word-desc,
+  #section-boom  .service-word-desc {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    max-width: 290px !important;
+    margin: 0 auto !important;
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  /* ── Per-section colour tokens ── */
+
+  /* BLINK — light card */
+  #section-blink .service-big-word { color: #0a0a0a !important; }
+  #section-blink .script-label     { color: rgba(0,0,0,0.32) !important; }
+  #section-blink .service-word-desc{ color: rgba(0,0,0,0.50) !important; }
+
+  /* BUILD — dark card */
+  #section-build .service-big-word { color: #ffffff !important; }
+  #section-build .script-label     { color: rgba(255,255,255,0.32) !important; }
+  #section-build .service-word-desc{ color: rgba(255,255,255,0.55) !important; }
+
+  /* BOOM — blue card */
+  #section-boom .service-big-word  { color: #ffffff !important; }
+  #section-boom .script-label      { color: rgba(255,255,255,0.40) !important; }
+  #section-boom .service-word-desc { color: rgba(255,255,255,0.72) !important; }
+
+  /* Hide images on mobile */
+  #section-blink .parallax-images,
+  #section-build .parallax-images,
+  #section-boom  .parallax-images  { display: none !important; }
+}
+
+/* ========================================
+   INFO-CARD EXPLORE HINT — ALL SCREENS
+   Touch (mobile/tablet/iPad) → "TAP TO EXPLORE"
+   Mouse (laptop/computer)    → "HOVER TO EXPLORE"
+   ======================================== */
+.info-card .info-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Default: touch devices — "Tap to Explore" */
+.info-card .info-card-content::after {
+  content: "Tap to Explore →";
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 20px;
+  padding: 8px 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 30px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+/* Mouse/hover devices (laptop, desktop) → "Hover to Explore" */
+@media (hover: hover) and (pointer: fine) {
+  .info-card .info-card-content::after {
+    content: "Hover to Explore →";
+  }
+}
+
+/* Once the user has interacted with any card, permanently hide all hints */
+body.bb-card-hint-seen .info-card .info-card-content::after {
+  display: none !important;
 }
 
 /* ========================================
