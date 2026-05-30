@@ -411,7 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       navLinks.classList.toggle('open');
-      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+      const isOpen = navLinks.classList.contains('open');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      document.body.classList.toggle('nav-open', isOpen);
     });
     // Close on link click
     navLinks.querySelectorAll('a').forEach(link => {
@@ -419,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.classList.remove('open');
         navLinks.classList.remove('open');
         document.body.style.overflow = '';
+        document.body.classList.remove('nav-open');
       });
     });
   }
