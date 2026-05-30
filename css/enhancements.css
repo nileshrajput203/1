@@ -1971,6 +1971,149 @@
 }
 
 /* ========================================
+   BLINK / BUILD / BOOM — MOBILE STICKY STACK
+   Overrides earlier mobile rules (placed last so !important wins)
+   ======================================== */
+@media (max-width: 768px) {
+
+  /* Each card sticks at top and the next slides over it */
+  #section-blink,
+  #section-build,
+  #section-boom {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #section-blink { z-index: 1; background: #F3F3F4 !important; }
+  #section-build { z-index: 2; background: #0a0a0a !important; }
+  #section-boom  { z-index: 3; background: var(--blue, #3D3DFF) !important; }
+
+  /* Inner wrapper — full size, centered, no GSAP transforms */
+  #section-blink .parallax-sticky,
+  #section-build .parallax-sticky,
+  #section-boom  .parallax-sticky {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: none !important;
+    will-change: auto !important;
+    transform-origin: unset !important;
+    padding: 48px 28px !important;
+    background: transparent !important;
+    gap: 20px !important;
+  }
+
+  /* Text block — centered */
+  #section-blink .parallax-text-content,
+  #section-build .parallax-text-content,
+  #section-boom  .parallax-text-content {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+    order: 0 !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Word wrap — relative so labels sit top-left / bottom-right */
+  #section-blink .service-word-wrap,
+  #section-build .service-word-wrap,
+  #section-boom  .service-word-wrap {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 18px 24px 18px !important;
+    margin-bottom: 20px !important;
+    overflow: visible !important;
+  }
+
+  /* Script labels — absolute, matching desktop positioning */
+  #section-blink .script-label.top-left,
+  #section-build .script-label.top-left,
+  #section-boom  .script-label.top-left {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    font-size: 17px !important;
+    order: unset !important;
+    align-self: unset !important;
+    margin: 0 !important;
+    font-family: var(--font-script, cursive) !important;
+  }
+
+  #section-blink .script-label.bottom-right,
+  #section-build .script-label.bottom-right,
+  #section-boom  .script-label.bottom-right {
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    font-size: 17px !important;
+    order: unset !important;
+    align-self: unset !important;
+    margin: 0 !important;
+    font-family: var(--font-script, cursive) !important;
+  }
+
+  /* Big word — massive and centered */
+  #section-blink .service-big-word,
+  #section-build .service-big-word,
+  #section-boom  .service-big-word {
+    order: 1 !important;
+    font-size: clamp(88px, 30vw, 128px) !important;
+    letter-spacing: -4px !important;
+    line-height: 0.88 !important;
+    margin: 0 !important;
+  }
+
+  /* Description — centered, readable */
+  #section-blink .service-word-desc,
+  #section-build .service-word-desc,
+  #section-boom  .service-word-desc {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    max-width: 290px !important;
+    margin: 0 auto !important;
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  /* ── Per-section colour tokens ── */
+
+  /* BLINK — light card */
+  #section-blink .service-big-word { color: #0a0a0a !important; }
+  #section-blink .script-label     { color: rgba(0,0,0,0.32) !important; }
+  #section-blink .service-word-desc{ color: rgba(0,0,0,0.50) !important; }
+
+  /* BUILD — dark card */
+  #section-build .service-big-word { color: #ffffff !important; }
+  #section-build .script-label     { color: rgba(255,255,255,0.32) !important; }
+  #section-build .service-word-desc{ color: rgba(255,255,255,0.55) !important; }
+
+  /* BOOM — blue card */
+  #section-boom .service-big-word  { color: #ffffff !important; }
+  #section-boom .script-label      { color: rgba(255,255,255,0.40) !important; }
+  #section-boom .service-word-desc { color: rgba(255,255,255,0.72) !important; }
+
+  /* Hide images on mobile */
+  #section-blink .parallax-images,
+  #section-build .parallax-images,
+  #section-boom  .parallax-images  { display: none !important; }
+}
+
+/* ========================================
    REDUCED MOTION
    ======================================== */
 @media (prefers-reduced-motion: reduce) {
