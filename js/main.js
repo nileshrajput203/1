@@ -653,6 +653,34 @@ document.addEventListener('DOMContentLoaded', () => {
         animationFrameId = null;
       }
     });
+
+    // ── Touch support: show reveal circle at tap point ──
+    card.addEventListener('touchstart', (e) => {
+      const rect = card.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      targetPos.x = x;
+      targetPos.y = y;
+      currentPos.x = x;
+      currentPos.y = y;
+
+      isHovered = true;
+      card.classList.add('is-hovered');
+
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animate();
+    }, { passive: true });
+
+    card.addEventListener('touchend', () => {
+      isHovered = false;
+      card.classList.remove('is-hovered');
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    });
   });
 
   /* ========================================

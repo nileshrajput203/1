@@ -1377,14 +1377,9 @@
     display: inline-block !important;
   }
 
-  /* Mobile hero CTA block — shown below pills on mobile */
+  /* Mobile hero CTA — hidden on mobile (nav Contact Us button serves this) */
   .hero-mobile-cta {
-    display: flex !important;
-    gap: 12px !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    margin-top: 24px !important;
-    width: 100% !important;
+    display: none !important;
   }
 
   .hero-mobile-cta a {
