@@ -25,6 +25,8 @@
       try {
         if (sessionStorage.getItem('bb_page_transition') === '1') {
           document.documentElement.classList.add('bb-entering');
+          document.documentElement.style.background = '#3D3DFF';
+          document.documentElement.style.backgroundColor = '#3D3DFF';
         }
       } catch (e) {}
     })();

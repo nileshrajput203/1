@@ -39,7 +39,7 @@ window.addEventListener('load', () => {
 
   if (cameFromTransition) {
     try { sessionStorage.removeItem('bb_page_transition'); } catch(e) {}
-    // Overlay is already covering the screen via .bb-entering CSS set in <head>.
+    // Overlay is already covering the screen via .bb-entering CSS + inline bg set in <head>.
     // Remove the class so GSAP can take over, then slide the curtain upward.
     document.documentElement.classList.remove('bb-entering');
     gsap.set(overlay, { y: '0%', pointerEvents: 'all' });
@@ -51,6 +51,9 @@ window.addEventListener('load', () => {
           ease: 'power3.inOut',
           onComplete: function() {
             gsap.set(overlay, { pointerEvents: 'none' });
+            // Clear the blue background set inline in <head> so the page renders normally
+            document.documentElement.style.background = '';
+            document.documentElement.style.backgroundColor = '';
           }
         });
       });
