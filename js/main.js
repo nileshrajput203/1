@@ -343,11 +343,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll trigger to pin the hero page and drive the scrollProg
     if (typeof ScrollTrigger !== 'undefined') {
+      const isMobile = window.innerWidth <= 768;
       ScrollTrigger.create({
         trigger: heroPage,
         start: "top top",
-        end: "+=900", // Reduced scroll distance to eliminate extra space
-        pin: true,
+        end: "+=900",
+        pin: !isMobile,
+        pinSpacing: !isMobile,
         onUpdate: (self) => {
           targetProg = self.progress;
           if (!rafId) {
