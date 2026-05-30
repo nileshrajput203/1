@@ -1776,6 +1776,28 @@
     padding: 0 24px;
   }
 
+  .whatwedo-label {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .whatwedo-label::before,
+  .whatwedo-label::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--blue);
+    opacity: 0.6;
+  }
+
   .whatwedo-display h2 {
     font-size: clamp(40px, 10.5vw, 64px);
     line-height: 0.9;
