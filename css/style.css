@@ -148,8 +148,7 @@ select {
    ======================================== */
 .hero-page {
   width: 100%;
-  height: 140vh;
-  /* Tall enough to contain the full visible arc + text */
+  height: 100vh;
   overflow: visible;
   /* Cards MUST NOT be clipped */
   position: relative;
