@@ -1514,70 +1514,17 @@
     margin-top: 8px !important;
   }
 
-  /* Images: in-flow 2-column grid */
+  /* Images: hidden on mobile */
   .parallax-images {
-    position: relative !important;
-    inset: auto !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-    width: 100% !important;
-    height: auto !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
+    display: none !important;
   }
 
-  .parallax-img,
-  .pimg-1, .pimg-2, .pimg-3,
-  .pimg-4, .pimg-5, .pimg-6 {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: 130px !important;
-    /* start hidden — Intersection Observer will trigger transition */
-    opacity: 0 !important;
-    transform: translateY(18px) scale(0.95) !important;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    will-change: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .parallax-img img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    border-radius: 10px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
-    display: block !important;
-  }
-
-  /* Text content: slide-up reveal on scroll */
+  /* Text content: always visible, no animation */
   .parallax-text-content {
-    opacity: 0 !important;
-    transform: translateY(26px) !important;
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-
-  /* ── In-view: triggered by Intersection Observer adding .in-view ── */
-  .parallax-word-section.in-view .parallax-text-content {
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
   }
-
-  .parallax-word-section.in-view .parallax-img {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  /* Stagger each image tile */
-  .parallax-word-section.in-view .pimg-1 { transition-delay: 0.08s !important; }
-  .parallax-word-section.in-view .pimg-2 { transition-delay: 0.15s !important; }
-  .parallax-word-section.in-view .pimg-3 { transition-delay: 0.22s !important; }
-  .parallax-word-section.in-view .pimg-4 { transition-delay: 0.29s !important; }
-  .parallax-word-section.in-view .pimg-5 { transition-delay: 0.36s !important; }
-  .parallax-word-section.in-view .pimg-6 { transition-delay: 0.43s !important; }
 
   /* ── Hero headline staggered load animation ── */
   @keyframes heroWordIn {
