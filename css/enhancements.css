@@ -1182,8 +1182,8 @@
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 0 !important;
-    /* Push it below the absolute-positioned navbar */
-    margin-top: calc(var(--nav-height) + 15px) !important;
+    /* Push it below the absolute-positioned navbar with breathing room */
+    margin-top: calc(var(--nav-height) + 32px) !important;
     -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
     mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent) !important;
   }
@@ -1714,10 +1714,11 @@
     font-size: 14px;
   }
 
-  /* ── FAB ── */
+  /* ── FAB — always bottom-right, never blocks content ── */
   .fab-container {
-    bottom: 16px;
+    bottom: 20px;
     right: 16px;
+    z-index: 9999;
   }
 
   .fab-toggle {
@@ -1728,6 +1729,11 @@
   .fab-option {
     width: 42px;
     height: 42px;
+  }
+
+  /* Ensure page content has enough bottom clearance for the FAB */
+  body {
+    padding-bottom: 80px;
   }
 
   /* ── Footer ── */
