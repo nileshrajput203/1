@@ -5090,6 +5090,11 @@ body::after {
   pointer-events: none;
 }
 
+/* Once tapped once, permanently hide the hint for that card */
+.flip-card.hint-used .flip-tap-hint {
+  display: none !important;
+}
+
 /* ── Responsive ── */
 @media (max-width: 680px) {
   .founders-grid {

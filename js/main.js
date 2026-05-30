@@ -1481,16 +1481,32 @@ window.addEventListener('load', () => {
 })();
 
 /* ========================================
-   FOUNDER CARDS — MOBILE TAP TO FLIP
+   MOBILE TAP HINTS — ONE-TIME HIDE
    ======================================== */
 (function () {
   const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   if (!isTouchDevice) return;
 
+  // ── Home info-cards: "Tap to Explore" ──
+  // Apply saved state immediately on load
+  if (localStorage.getItem('bbTapHintSeen')) {
+    document.body.classList.add('bb-tap-hint-seen');
+  }
+
+  document.querySelectorAll('.info-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      localStorage.setItem('bbTapHintSeen', '1');
+      document.body.classList.add('bb-tap-hint-seen');
+    }, { once: true });
+  });
+
+  // ── Founder cards: "Tap for info" ──
   document.querySelectorAll('.flip-card').forEach(function (card) {
     card.addEventListener('click', function (e) {
       e.stopPropagation();
       card.classList.toggle('flipped');
+      // Permanently hide the hint for this card after first tap
+      card.classList.add('hint-used');
     });
   });
 
