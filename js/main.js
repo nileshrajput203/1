@@ -488,15 +488,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const imgs = section.querySelectorAll('.parallax-img');
+        // 6 unique entry vectors — each image travels from a distinct origin
+        const entryVectors = [
+          { x: '-22vw', y: '-14vh', rot: -20 }, // top-left  → slides from far left + above
+          { x:  '20vw', y: '-16vh', rot:  18 }, // top-right → slides from right + above
+          { x: '-24vw', y:   '6vh', rot: -14 }, // mid-left  → slides from far left
+          { x:  '10vw', y:  '22vh', rot:  12 }, // mid-right → slides from below + slight right
+          { x: '-12vw', y:  '24vh', rot: -22 }, // bot-left  → slides from below + left
+          { x:  '22vw', y:  '18vh', rot:  20 }, // bot-right → slides from below + far right
+        ];
         imgs.forEach((img, index) => {
-          const speed = parseFloat(img.dataset.speed) || 0.6;
-          const isLeft = index % 2 === 0;
-          const directionX = isLeft ? -1 : 1;
+          const vec = entryVectors[index % entryVectors.length];
           gsap.fromTo(img,
-            { x: `${directionX * 15}vw`, y: `${25 * speed}vh`, rotation: directionX * 15, scale: 0.85, opacity: 0 },
+            { x: vec.x, y: vec.y, rotation: vec.rot, scale: 0.82, opacity: 0 },
             {
-              x: "0vw", y: "0vh", rotation: 0, scale: 1, opacity: 1, ease: "none",
-              scrollTrigger: { trigger: section, start: "top bottom", end: "top top", scrub: true }
+              x: '0vw', y: '0vh', rotation: 0, scale: 1, opacity: 1, ease: 'none',
+              scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: true }
             }
           );
         });

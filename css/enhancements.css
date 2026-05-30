@@ -1891,7 +1891,14 @@
     padding: 0 24px 32px !important;
     mix-blend-mode: normal !important;
     color: #000 !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .team-overlay-text {
+    width: 100% !important;
+    text-align: center !important;
   }
 
   .team-overlay-text h2 {
